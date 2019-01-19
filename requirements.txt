@@ -11,4 +11,3 @@ haversine
 sympy
 wtforms
 datetime
-itertools
