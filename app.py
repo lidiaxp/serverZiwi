@@ -13,7 +13,6 @@ import os
 import random
 import shutil
 from datetime import datetime
-from itertools import permutations
 
 from matplotlib.figure import Figure                       
 from matplotlib.axes import Axes                           
