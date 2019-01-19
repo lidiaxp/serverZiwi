@@ -1,0 +1,173 @@
+<section id="otimizacao" style="background-color: #FF9800">
+	<div class="container" style="margin-top: 80px">
+		<div style="text-align: center;">
+			<form action="indoorAG" method="POST" enctype="multipart/form-data">
+				<div class="row">
+					<div class="radio col-lg-2">
+  						<label><input type="radio" name="optradio" id="sem" onclick="semtomada()" value="sem" checked>Sem Tomadas</label>
+					</div>
+					<div class="radio col-lg-2">
+  						<label><input type="radio" name="optradio" id="com" onclick="comtomada()" value="com">Com Tomadas</label>
+					</div>
+					<div class="col-lg-3">
+            <label>Eixo X das Tomadas (m)</label>
+            <input id="txx" name="txx" class="form-control" placeholder="Ex: 5.5,8,7.3">
+            <small>Adicione as tomadas depois de vírgulas e não coloque espaço</small>
+          </div>
+          <div class="col-lg-3">
+          	<label>Eixo Y das Tomadas (m)</label>
+          	<input id="tyy" name="tyy" class="form-control" placeholder="Ex: 5.5,8,7.3">
+          	<small>Adicione as tomadas depois de vírgulas e não coloque espaço</small>
+          </div>
+          <div class="col-lg-2">
+            <label>Número de Roteadores</label>
+            <input type="number" id="na2" name="na2" class="form-control">
+          </div>
+				</div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label>Largura Máxima da Sala (m)</label>
+            <input step="any" type="number" id="xt2" name="xt2" class="form-control">
+          </div>
+          <div class="col-lg-6">
+            <label>Comprimento Máximo da Sala (m)</label>
+            <input step="any" type="number" id="yt2" name="yt2" class="form-control">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label>Eixo X dos Roteadores (m)</label>
+            <input type="text" id="x02" name="x02" class="form-control" placeholder="Ex: 5.5,8,7.3">
+          </div>
+          <div class="col-lg-6">
+            <label>Eixo Y dos Roteadores (m)</label>
+            <input type="text" id="y02" name="y02" class="form-control" placeholder="Ex: 5.5,8,7.3">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label>Potência Recebida no Ponto d0 (m)</label>
+            <input step="any" type="ptd0" id="ptd02" name="ptd02" class="form-control">
+          </div>
+          <div class="col-lg-6">
+            <label>Distância Mínima (m)</label>
+            <input step="any" type="number" id="d02" name="d02" class="form-control">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label>Potência de Transmissão (dB)</label>
+            <input step="any" type="number" id="ptdb2" name="ptdb2" class="form-control">
+          </div>
+          <div class="col-lg-6">
+            <label>Frequência (MHz)</label>
+            <input step="any" type="number" id="fq2" name="fq2" class="form-control">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label>Ganho da Antena Transmissora</label>
+            <input step="any" type="number" id="gt2" name="gt2" class="form-control">
+          </div>
+          <div class="col-lg-6">
+            <label>Ganho da Antena Receptora</label>
+            <input step="any" type="number" id="gr2" name="gr2" class="form-control">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label>Temperatura (K)</label>
+            <input step="any" type="number" id="k2" name="k2" class="form-control" placeholder="A temperatura deve ser em Kelvin">
+            <small>A temperatura ambiente em Kelvin é 300</small>
+          </div>
+          <div class="col-lg-4">
+            <label>Largura de Banda (MHz)</label>
+            <input step="any" type="number" id="bmhz2" name="bmhz2" class="form-control">
+            <small>Costuma-se usar 20</small>
+          </div>
+          <div class="col-lg-4">
+            <label>Fator de Ruído</label>
+            <input step="any" type="number" id="noise2" name="noise2" class="form-control" placeholder="noisefactor">
+            <small>Costuma-se usar 0</small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <label>Ambiente</label>
+            <select class="form-control" id="nameAmbiente2" name="nameAmbiente2">
+              <option>----------</option>
+              <option>Corredor</option>
+              <option>Ambientes Grandes e Vazios</option>
+              <option>Ambientes Mobiliados</option>
+              <option>Ambientes Demasiadamente Mobiliados</option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label>Arquivo com as Medições (.txt)</label>
+              <input type="file" class="form-control-file" name="myfileIN2">
+              <small>(Opcional, caso defina o ambiente)</small>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label>Inserir o Arquivo com as Paredes (.txt)</label>
+              <input type="file" class="form-control-file" name="paredes2">
+              <small>(Opcional, exceto para o Motley Keenan)</small>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label>Modelo</label>
+              <select class="form-control" id="nameModels2" name="nameModels2">
+                <option>Motley Keenan</option>
+                <option>Close IN</option>
+                <option>Floating Interception</option>
+                <option>ITU-R P.1238-8</option>
+              </select>
+            </div>
+          </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label>Número de Interações do AG</label>
+            <input type="number" id="intAG" name="intAG" class="form-control">
+            <small>Quanto mais interações mais demorado será</small>
+          </div>
+          <div class="col-lg-6">
+            <label>Limiar de Qualidade (dB)</label>
+            <input step="any" type="number" id="limAG" name="limAG" class="form-control" placeholder="Ex: -60">
+            <small>Potência recebida considerada boa para o seu caso</small>         
+          </div>
+        </div>
+        <br><br>
+        <div class="col-lg-12">
+          <button type="submit" class="btn btn-primary btn-xl">Calcular</button>   
+        </div>
+			</form>
+		</div>
+	</div>
+	<br><br><br><br><br><br>
+</section>
+
+<script type="text/javascript">
+	document.getElementById("txx").readOnly = true;
+	document.getElementById("tyy").readOnly = true;
+	document.getElementById("na2").readOnly = true;
+  document.getElementById("intAG").readOnly = false;
+  document.getElementById("limAG").readOnly = false;
+
+	function comtomada(){
+		document.getElementById("txx").readOnly = false;
+		document.getElementById("tyy").readOnly = false;
+    document.getElementById("na2").readOnly = false;
+    document.getElementById("intAG").readOnly = true;
+    document.getElementById("limAG").readOnly = true;
+	}
+
+	function semtomada(){
+		document.getElementById("txx").readOnly = true;
+		document.getElementById("tyy").readOnly = true;
+	  document.getElementById("na2").readOnly = true;
+    document.getElementById("intAG").readOnly = false;
+    document.getElementById("limAG").readOnly = false;
+  }
+</script>

@@ -1,0 +1,187 @@
+<section id="choose" class="services-section" > <!--style="background-color: #FFCCBC"-->
+  <div >
+    <div>   
+      <div>
+        <div style="text-align: center; margin-top: -80px">
+          <h1>Crie o Cenário Aqui</h1>
+          <button class="btn btn-secondary btn-xl" onclick="parede()">Parede</button>
+          <button class="btn btn-secondary btn-xl" onclick="paredeComJanela()">Parede com Janela</button>
+          <button class="btn btn-secondary btn-xl" onclick="janela()">Janela</button>
+          <br><br>
+          <h4 id="estado">Colocando Parede</h4>
+        </div>
+        <br><br>
+        <div class="container">
+          <div class="row">         
+            <div class="col-lg-4 home-about-left"">
+              <form action="" method="post" role="form">
+                <h4>Nome do Arquivo</h4>
+                <textarea name="titulo" rows="2" cols="20"></textarea>
+                <h4>Arquivo</h4>
+                <textarea name="texto" rows="20" cols="20" id="log"></textarea>
+                <br>
+                <button class="btn btn-primary" type="submit" name="submit_button" value="Do Something">Download</button>
+                <button class="btn btn-secondary" onclick="atualizarLog()">Atualizar</button>
+              </form>
+            </div>
+          <div class="col-lg-2 home-about-right">
+        <div id="hereCanvas" onmousedown="coord(event)"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script>  
+function createCanvas(w, h){
+  var canvas = document.createElement('canvas');
+  div = document.getElementById("hereCanvas");
+
+  canvas.id = "CursorLayer";
+  canvas.width = w;
+  canvas.height = h;
+  canvas.style.zIndex = 8;
+  canvas.style.position = "absolute";
+  canvas.style.border = "1px solid";
+
+  div.appendChild(canvas);
+}
+
+function drawLine(c, x0, x1, y0, y1, t, color) {
+  c.beginPath(); 
+  c.lineWidth = t;
+  c.moveTo(x0 * 100, y0 * 100);
+  c.lineTo(x1 * 100, y1 * 100);
+  c.strokeStyle = color;
+  c.stroke();
+}
+
+function parede(){
+  tamanho = 3;
+  cor = 'black';
+  stillo = 3;
+  document.getElementById('estado').innerText = 'Colocando Parede';
+}
+
+function paredeComJanela(){
+  tamanho = 1;
+  cor = 'black';
+  stilo = 2;
+  document.getElementById('estado').innerText = 'Colocando Parede com Janela';
+}
+
+function janela(){
+  tamanho = 3;
+  cor = 'red';
+  stilo = 1;
+  document.getElementById('estado').innerText = 'Colocando Janela';
+}
+
+function exportar(){
+  
+  //window.open('oi.txt');
+}
+
+function colorsParede(valor, local){
+  if(valor === 1){
+    tamanho = 3;
+    cor = 'red';
+    stilo = 1;
+  } else if(valor === 2){
+    tamanho = 1;
+    cor = 'black';
+    stilo = 2;
+  }else if(valor === 3){
+    tamanho = 3;
+    cor = 'black';
+    stilo = 3;
+  }else{
+    if(local === 0){
+
+    }else{
+      alert("Há algo errado com o estilo da sua linha");
+    }
+  }
+}
+
+function atualizarLog(){
+  var inf = document.getElementById('log').value;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  informacao = '';
+  var inicio = 0;
+  var fim = 0;
+  var theLine = '';
+
+  var quebras = 0;
+  for (var i = 0; i < inf.length; i++) {    
+    if (inf.charAt(i) == "\n") {
+      fim = i;
+      var line = inf.substring(inicio, fim);
+      informacao = informacao.concat(inf.substring(inicio, fim) + "\n");
+      colorsParede(parseInt(line.split(" ")[5]), 1);
+      drawLine(ctx, parseFloat(line.split(" ")[1]), parseFloat(line.split(" ")[2]), parseFloat(line.split(" ")[3]), parseFloat(line.split(" ")[4]), tamanho, cor);
+      inicio = i + 1;
+      quebras++;
+    }
+  }
+
+  informacao = informacao.substring(0, informacao.length - 1);
+
+  informacao = informacao.concat(inf.substring(fim, inf.length));
+  
+  var line = inf.substring(fim, inf.length);
+  
+  colorsParede(parseInt(line.split(" ")[5]), 0);
+  drawLine(ctx, parseFloat(line.split(" ")[1]), parseFloat(line.split(" ")[2]), parseFloat(line.split(" ")[3]), parseFloat(line.split(" ")[4]), tamanho, cor);
+}
+
+var click = 1;
+var informacao = '';
+
+t = prompt("Tamanho do ambiente (Ex: 12.8x7.2) em m");
+
+createCanvas(parseFloat(t.split("x")[0]) * 100, parseFloat(t.split("x")[1]) * 100);
+
+var canvas = document.getElementById('CursorLayer');
+var tamanho = 3;
+var cor = 'black';
+var stilo = 3;
+
+if (canvas.getContext) {
+  var ctx = canvas.getContext('2d');
+}
+
+function coord(e) {
+  if(click === 0){
+    posx0 = e.clientX;
+      posy0 = e.clientY;
+    click = 1;
+  }else{
+    posx1 = e.clientX;
+      posy1 = e.clientY;
+    click = 0;
+  }
+
+  if(click === 1){
+    if(Math.abs(posx1 - posx0) < Math.abs(posy1 - posy0)){
+      a = prompt("Linha Vertical (ex: 0 5 1) inicioLinha - fimLinha - altura (em metro)");
+      drawLine(ctx, parseFloat(a.split(" ")[2]), parseFloat(a.split(" ")[2]), parseFloat(a.split(" ")[0]), parseFloat(a.split(" ")[1]), tamanho, cor);  
+      informacao = informacao.concat("v " +  a.split(" ")[2] + " " + a.split(" ")[2] + " " + a.split(" ")[0] + " " + a.split(" ")[1] + " " + stilo + "\n");
+      posx0, posy1, posy0, posx1 = 0;
+      //alert("Vertical");
+    }else{
+      a = prompt("Linha Horizontal (ex: 0 5 1) inicioLinha - fimLinha - distância (em metro)");
+      drawLine(ctx, parseFloat(a.split(" ")[0]), parseFloat(a.split(" ")[1]), parseFloat(a.split(" ")[2]), parseFloat(a.split(" ")[2]), tamanho, cor);  
+      informacao = informacao.concat("h " +  a.split(" ")[0] + " " + a.split(" ")[1] + " " + a.split(" ")[2] + " " + a.split(" ")[2] + " " + stilo + "\n");
+      posx0, posy1, posy0, posx1 = 0;
+      //alert("Horizontal")
+    }
+
+    document.getElementById("log").value = informacao;
+  }
+}
+
+
+</script>

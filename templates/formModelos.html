@@ -1,0 +1,120 @@
+<section id="modelos" style="background-color: #FFF"> 
+	<div class="container" style="margin-top: 80px">
+		<div style="text-align: center;">
+			<form action="indoor" method="POST" enctype="multipart/form-data">
+            	<div class="row">
+                	<div class="col-lg-6">
+                  		<label>Largura Máxima da Sala (m)</label>
+                  		<input step="any" type="number" id="xt" name="xt" class="form-control">
+                	</div>
+                	<div class="col-lg-6">
+                  		<label>Comprimento Máximo da Sala (m)</label>
+                  		<input step="any" type="number" id="yt" name="yt" class="form-control">
+                	</div>
+              	</div>
+            	<div class="row">
+                	<div class="col-lg-6">
+                  		<label>Eixo X dos Roteadores (m)</label>
+                  		<input type="text" id="x0" name="x0" class="form-control" placeholder="Ex: 5.5,8,7.3">
+                  		<small style="color: red">Adicione os roteadores depois de vírgulas e não coloque espaço</small>
+                	</div>
+                	<div class="col-lg-6">
+                  		<label>Eixo Y dos Roteadores (m)</label>
+                  		<input type="text" id="y0" name="y0" class="form-control" placeholder="Ex: 5.5,8,7.3">
+                  		<small style="color: red">Adicione os roteadores depois de vírgulas e não coloque espaço</small>
+                	</div>
+              	</div>
+              	<div class="row">
+                	<div class="col-lg-6">
+                  		<label>Potência Recebida no Ponto d0 (m)</label>
+                  		<input step="any" type="ptd0" id="ptd0" name="ptd0" class="form-control">
+                	</div>
+                	<div class="col-lg-6">
+                  		<label>Distância Mínima (m)</label>
+                  		<input step="any" type="number" id="d0" name="d0" class="form-control">
+                	</div>
+              	</div>
+              	<div class="row">
+                	<div class="col-lg-6">
+                  		<label>Potência de Transmissão (dB)</label>
+                  		<input step="any" type="number" id="ptdb" name="ptdb" class="form-control">
+                	</div>
+                	<div class="col-lg-6">
+                  		<label>Frequência (MHz)</label>
+                  		<input step="any" type="number" id="fq" name="fq" class="form-control">
+                	</div>
+              	</div>
+              	<div class="row">
+                	<div class="col-lg-6">
+                  		<label>Ganho da Antena Transmissora</label>
+                  		<input step="any" type="number" id="gt" name="gt" class="form-control">
+                	</div>
+                	<div class="col-lg-6">
+                  		<label>Ganho da Antena Receptora</label>
+                  		<input step="any" type="number" id="gr" name="gr" class="form-control">
+                	</div>
+              	</div>
+              	<div class="row">
+                	<div class="col-lg-4">
+                  		<label>Temperatura (K)</label>
+                  		<input step="any" type="number" id="k" name="k" class="form-control" placeholder="A temperatura deve ser em Kelvin">
+                  		<small>A temperatura ambiente em Kelvin é 300</small>
+                	</div>
+                	<div class="col-lg-4">
+                  		<label>Largura de Banda (MHz)</label>
+                  		<input step="any" type="number" id="bmhz" name="bmhz" class="form-control">
+                  		<small>Costuma-se usar 20</small>
+                	</div>
+                	<div class="col-lg-4">
+                  		<label>Fator de Ruído</label>
+                  		<input step="any" type="number" id="noise" name="noise" class="form-control" placeholder="noisefactor">
+                  		<small>Costuma-se usar 0</small>
+                	</div>
+              	</div>
+              	<br><br>
+              	<div class="row">
+                  <div class="col-lg-3">
+                    <label>Ambiente</label>
+                    <select class="form-control" id="nameAmbiente" name="nameAmbiente">
+                      <option>----------</option>
+                      <option>Corredor</option>
+                      <option>Ambientes Grandes e Vazios</option>
+                      <option>Ambientes Mobiliados</option>
+                      <option>Ambientes Demasiadamente Mobiliados</option>
+                    </select>
+                  </div>
+              		<div class="col-lg-3">
+              			<div class="form-group">
+             				  <label>Arquivo com as Medições (.txt)</label>
+              				<input type="file" class="form-control-file" name="myfileIN">
+                      <small>(Opcional, caso defina o ambiente)</small>
+            			  </div>
+              		</div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label>Inserir o Arquivo com as Paredes (.txt)</label>
+                      <input type="file" class="form-control-file" name="paredes">
+                      <small>(Opcional, exceto para o Motley Keenan)</small>
+                    </div>
+                  </div>
+              		<div class="col-lg-3">
+                  	<label>Modelo</label>
+                  	<select class="form-control" id="nameModels" name="nameModels">
+      						    <option>Motley Keenan</option>
+      						    <option>Close IN</option>
+      						    <option>Floating Interception</option>
+      						    <option>ITU-R P.1238-8</option>
+   						      </select>
+                	</div>
+              	</div>
+                <br>
+                <div class="row" style="text-align: center">
+                  <div class="col-lg-12">
+                      <button type="submit" class="btn btn-primary btn-xl">Calcular</button>   
+                  </div>
+                </div>
+			</form>
+		</div>
+	</div>
+	<br><br><br><br><br><br>
+</section>

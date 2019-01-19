@@ -1,0 +1,344 @@
+<section id="comparacao" style="background-color: #FF9800">
+	<br><br>
+	<div class="row">
+    	<div class="container" style="text-align: center;"> 
+      		<div class="row align-items-center justify-content-between">
+        		<div class="col-lg-6 home-about-left"> 
+          			<br><br>
+          			<form action="comparacao" method="POST" enctype="multipart/form-data">
+            			<div class="form-group">
+              				<label for="freq1">Frequência (MHz)</label>
+              				<input step="any" type="number" id="freq1" name="freq1" class="form-control" placeholder="Insira a frequência em MHz">
+            			</div>
+            			<div class="form-group">
+              				<label>Distância Mínima (m)</label>
+              				<input step="any" type="number" name="d01" id="d01" class="form-control" placeholder="Insira a distância mínima da medição em metros">
+            			</div>
+            			<div class="form-group">
+              				<label>Potência de Transmissão (dB)</label>
+              				<input step="any" type="number" name="ptdb1" id="ptdb1" class="form-control" placeholder="Insira a potência de transmissão">
+            			</div>
+            			<div class="form-group">
+              				<div class="row">
+                				<div class="col-lg-6">
+                  					<label>Ganho da Antena Transmissora (dB)</label>
+              						<input step="any" type="number" id="gt1" name="gt1" class="form-control" placeholder="Insira o ganho da antena transmissora em dB">
+                				</div>
+                				<div class="col-lg-6">
+                  					<label>Ganho da Antena Receptora (dB)</label>
+              						<input step="any" type="number" id="gr1" name="gr1" class="form-control" placeholder="Insira o ganho da antena receptora em dB">
+                				</div>
+              				</div>
+            			</div>
+            			<div class="form-group">
+              				<div class="row">
+                				<div class="col-lg-6">
+                  					<label>Posição X do Roteador</label>
+              						<input step="any" type="number" id="x01" name="x01" class="form-control">
+              						<small style="color: white">Esse modo aceita apenas um roteador</small>
+                				</div>
+                				<div class="col-lg-6">
+                  					<label>Posição Y do Roteador</label>
+              						<input step="any" type="number" id="y01" name="y01" class="form-control">
+              						<small style="color: white">Esse modo aceita apenas um roteador</small>
+                				</div>
+              				</div>
+            			</div>
+            			<div class="form-group">
+              				<label>Inserir o Arquivo com as Medições Outdoor (.txt)</label>
+              				<input type="file" class="form-control-file" name="compararFile">
+            			</div>
+            			<br>
+            			<div style="text-align: center;">
+              				<button type="submit" class="btn btn-primary btn-xl">Comparar e Calcular 'n'</button>   
+            			</div>
+          			</form>
+        		</div>
+        		<div class="col-lg-6 home-about-right">
+          			<div style="text-align: center">
+            			<br><br>
+            			<h1 id="estado" style="color: #FFF; text-align: center">Comparação entre os modelos e os dados medidos</h1>
+            			<div id="GraphComparacao" style="width: 700px; height: 500px;">
+            				<br>
+            				<form action="compararDown" method="POST" role="form">
+              					<button type="submit" class="btn btn-primary btn-xl">Download</button>
+            				</form>
+          				</div>
+       	 			</div>
+      			</div>
+    		</div>
+  		</div>
+  	</div>
+  	<br><br><br><br>
+</section>
+
+<section id="calculos" style="background-color: #AA00FF">
+	<br><br>
+	<div class="container" style="text-align: center">
+		{% if algo%}
+		<script>
+   			 $(function() { 
+      			 location.hash = "#{{algo}}" 
+    			});
+			</script>
+		<h1 id="estado" style="color: #FFF">Expoente de Perda de Percurso (n)</h1>
+		{% else %}
+		<h1 style="color: #FFF">Os dados aparecerão aqui a partir dos cálculos da seção de comparação</h1>
+		{% endif %}
+		<div class="row">
+      <div class="col-lg-12">
+        <div id="GraphCalculos" style="width: 700px; height: 500px">    
+      </div>
+    </div>
+	</div>
+
+	<br><br>
+	
+	<div>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Close In</th>
+          <th scope="col">Motley Keenan</th>
+          <th scope="col">ITU-R P.1238-8</th>
+          <th scope="col">Floating Interception</th>
+        </tr>
+      </thead>
+      <tbody style="background-color: #FFF">
+        <tr>
+          <th scope="row">n</th>
+          <td id="n11">0</td>
+          <td id="n21">0</td>
+          <td id="n31">0</td>
+          <td id="n41">0</td>
+        </tr>
+        <tr>
+          <th scope="row">RMSE</th>
+          <td id="rmse11">0</td>
+          <td id="rmse21">0</td>
+          <td id="rmse31">0</td>
+          <td id="rmse41">0</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br><br>
+</section>
+
+<script type="text/javascript"> window.myVar1 = "{{dist1}}"; window.myVar2 = "{{itu}}"; window.myVar3 = "{{ci}}"; window.myVar4 = "{{mk}}"; window.myVar5 = "{{infoCom}}";window.lnn = "{{Lnn}}";window.ln1 = "{{Ln1}}";window.ln2 = "{{Ln2}}";window.ln3 = "{{Ln3}}";window.ln4 = "{{Ln4}}";window.ln5 = "{{Ln5}}";window.dns = "{{dns}}";window.myVar6 = "{{o}}";</script>
+
+<script type="text/javascript">
+
+myVar1 = myVar1.substring(1, myVar1.length - 1);
+myVar2 = myVar2.substring(1, myVar2.length - 1);
+myVar3 = myVar3.substring(1, myVar3.length - 1);
+myVar4 = myVar4.substring(1, myVar4.length - 1);
+//myVar5 = myVar5.substring(1, myVar5.length - 1);
+myVar6 = myVar6.substring(1, myVar6.length - 1);
+
+d  = [];
+v = [];
+ci = [];
+mk = [];
+itu = [];
+val = [];
+
+
+var oill = myVar1.split(", ");
+for(var i=0; i < oill.length; i++) {
+    d.push(oill[i]);
+}
+
+
+var oill = myVar6.split(", ");
+for(var i=0; i < oill.length; i++) {
+    v.push(oill[i]);
+}
+
+var oill = myVar2.split(", ");
+for(var i=0; i < oill.length; i++) {
+    itu.push(oill[i]);
+}
+
+var oill = myVar3.split(", ");
+for(var i=0; i < oill.length; i++) {
+    ci.push(oill[i]);
+}
+
+var oill = myVar4.split(", ");
+for(var i=0; i < oill.length; i++) {
+    mk.push(oill[i]);
+}
+
+var oill = myVar5.split(" ");
+for(var i=0; i < oill.length; i++) {
+    val.push(oill[i]);
+}
+
+
+
+document.getElementById("n11").innerText = val[0];
+document.getElementById("n21").innerText = val[0];
+document.getElementById("n31").innerText = val[0];
+document.getElementById("n41").innerText = val[0];
+document.getElementById("rmse11").innerText = val[2];
+document.getElementById("rmse21").innerText = val[3];
+document.getElementById("rmse31").innerText = val[1];
+
+
+
+var trace1 = {
+  x: d,
+  y: v,
+  name:'Dados Medidos',
+  mode: 'markers'
+};
+
+var trace2 = {
+  x: d,
+  y: ci,
+  name:'Close In',
+  mode: 'markers'
+};
+
+var trace3 = {
+  x: d,
+  y: mk,
+  name:'Motley Keenan',
+  mode: 'markers'
+};
+
+var trace4 = {
+  x: d,
+  y: itu,
+  name:'ITU-R P.1238-8',
+  mode: 'markers'
+};
+
+var data = [trace1, trace2, trace3, trace4];
+
+var layout = {};
+
+Plotly.newPlot('GraphComparacao', data, layout);
+
+
+
+lnn = lnn.substring(1, lnn.length - 1);
+ln1 = ln1.substring(1, ln1.length - 1);
+ln2 = ln2.substring(1, ln2.length - 1);
+ln3 = ln3.substring(1, ln3.length - 1);
+ln4 = ln4.substring(1, ln4.length - 1);
+ln5 = ln5.substring(1, ln5.length - 1);
+dns = dns.substring(1, dns.length - 1);
+
+nn  = [];
+n1 = [];
+n2 = [];
+n3 = [];
+n4 = [];
+n5 = [];
+dn = [];
+
+var oill = lnn.split(", ");
+for(var i=0; i < oill.length; i++) {
+    nn.push(oill[i]);
+}
+
+var oill = ln1.split(", ");
+for(var i=0; i < oill.length; i++) {
+    n1.push(oill[i]);
+}
+
+var oill = ln2.split(", ");
+for(var i=0; i < oill.length; i++) {
+    n2.push(oill[i]);
+}
+
+var oill = ln3.split(", ");
+for(var i=0; i < oill.length; i++) {
+    n3.push(oill[i]);
+}
+
+var oill = ln4.split(", ");
+for(var i=0; i < oill.length; i++) {
+    n4.push(oill[i]);
+}
+
+var oill = ln5.split(" ");
+for(var i=0; i < oill.length; i++) {
+    n5.push(oill[i]);
+}
+
+var oill = dns.split(" ");
+for(var i=0; i < oill.length; i++) {
+    dn.push(oill[i]);
+}
+
+var trace1 = {
+  x: dn,
+  y: nn,
+  name:'n = ' + val[0],
+  mode: 'markers'
+  ,
+  marker: {
+    color: 'rgb(255, 0, 0)'
+    }
+};
+
+var trace2 = {
+  x: dn,
+  y: n1,
+  name:'n = 1',
+  mode: 'markers',
+  marker: {
+    color: 'rgb(0, 0, 0)'
+    }
+};
+
+var trace3 = {
+  x: dn,
+  y: n2,
+  name:'n = 2',
+  mode: 'markers',
+  marker: {
+    color: 'rgb(0, 0, 0)'
+    }
+};
+
+var trace4 = {
+  x: dn,
+  y: n3,
+  name:'n = 3',
+  mode: 'markers',
+  marker: {
+    color: 'rgb(0, 0, 0)'
+    }
+};
+
+var trace5 = {
+  x: dn,
+  y: n4,
+  name:'n = 4',
+  mode: 'markers',
+  marker: {
+    color: 'rgb(0, 0, 0)'
+    }
+};
+
+var trace6 = {
+  x: dn,
+  y: n5,
+  name:'n = 5',
+  mode: 'markers',
+  marker: {
+    color: 'rgb(0, 0, 0)'
+    }
+};
+
+var data = [trace1, trace2, trace3, trace4, trace5, trace6];
+
+var layout = {};
+
+Plotly.newPlot('GraphCalculos', data, layout);
+</script>

@@ -1,0 +1,211 @@
+<section id="out"> <!--style="background-color: #FFCCBC"-->
+  <div style="text-align: center; background-color: #EF6C00; height: 150px; margin-top: -100px">
+    <br>
+    <h1 style="color: #FFF">Modelos Outdoor</h1>
+    <h4 style="color: #FFF">Possui os modelos: ECC 33, Cost 231, SUI, Close In e Floating Interception</h4>
+  </div>
+
+  <div>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">SUI</th>
+          <th scope="col">Cost 231</th>
+          <th scope="col">ECC 33</th>
+          <th scope="col">Close In</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">n</th>
+          <td id="n1">0</td>
+          <td id="n2">0</td>
+          <td id="n3">0</td>
+          <td id="n4">0</td>
+        </tr>
+        <tr>
+          <th scope="row">RMSE</th>
+          <td id="rmse1">0</td>
+          <td id="rmse2">0</td>
+          <td id="rmse3">0</td>
+          <td id="rmse4">0</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row">
+    <div class="container"> 
+      <div class="row align-items-center justify-content-between">
+        <div class="col-lg-6 home-about-left"> 
+          <br><br>
+          <form action="outdoor" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="freq">Frequência (MHz)</label>
+              <input step="any" type="number" id="freq" name="freq" class="form-control" placeholder="Insira a frequência em MHz">
+            </div>
+            <div class="form-group">
+              <label>Altura da Antena Transmissora (m)</label>
+              <input step="any" type="number" id="h" name="h" class="form-control" placeholder="Insira a altura da antena em metros">
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-lg-6">
+                  <label>Latitude</label>
+                  <input step="any" type="number" id="lat" name="lat" class="form-control" placeholder="Latitude da antena">
+                </div>
+                <div class="col-lg-6">
+                  <label>Longitude</label>
+                  <input step="any" type="number" id="long" name="long" class="form-control" placeholder="Longitude da antena">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Potência Transmitida (dB)</label>
+              <input step="any" type="number" name="ptdb" class="form-control" placeholder="Insira a potência transmitida em dB">
+            </div>
+            <div class="form-group">
+              <label>Distância Mínima (m)</label>
+              <input step="any" type="number" name="d0" class="form-control" placeholder="Insira a distância mínima da medição em metros">
+            </div>
+            <div class="form-group">
+              <label>Ganho da Antena Transmissora (dB)</label>
+              <input step="any" type="number" name="gt" class="form-control" placeholder="Insira o ganho da antena transmissora em dB">
+            </div>
+            <div class="form-group">
+              <label>Ganho da Antena Receptora (dB)</label>
+              <input step="any" type="number" name="gr" class="form-control" placeholder="Insira o ganho da antena receptora em dB">
+            </div>
+            <div class="form-group">
+              <label>Inserir o Arquivo com as Medições Outdoor (.txt)</label>
+              <input type="file" class="form-control-file" name="myfile">
+            </div>
+            <br>
+            <div style="text-align: center;">
+              <button type="submit" class="btn btn-primary btn-xl">Calcular</button>   
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-6 home-about-right">
+          <div style="text-align: center">
+            <br><br>
+            <h1 id="estado">Comparação entre os modelos e os dados medidos</h1>
+            <div id="myDiv1" style="width: 500px; height: 500px;" >
+            <form action="down" method="POST" role="form">
+              <button type="submit" class="btn btn-primary btn-xl">Download</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+</section>
+
+<script type="text/javascript"> window.myVar1 = "{{dist}}"; window.myVar2 = "{{val}}"; window.myVar3 = "{{ecc}}"; window.myVar4 = "{{cost}}"; window.myVar5 = "{{sui}}"; window.myVar6 = "{{ci}}"; window.myVar7 = "{{info}}"</script>
+
+<script type="text/javascript">
+
+myVar1 = myVar1.substring(1, myVar1.length - 1);
+myVar2 = myVar2.substring(1, myVar2.length - 1);
+myVar3 = myVar3.substring(1, myVar3.length - 1);
+myVar4 = myVar4.substring(1, myVar4.length - 1);
+myVar5 = myVar5.substring(1, myVar5.length - 1);
+myVar6 = myVar6.substring(1, myVar6.length - 1);
+
+d  = [];
+v = [];
+ecc = [];
+cost = [];
+sui = [];
+ci = [];
+val = [];
+
+var oill = myVar1.split(", ");
+for(var i=0; i < oill.length; i++) {
+    d.push(oill[i]);
+}
+
+var oill = myVar2.split(", ");
+for(var i=0; i < oill.length; i++) {
+    v.push(oill[i]);
+}
+
+var oill = myVar3.split(", ");
+for(var i=0; i < oill.length; i++) {
+    ecc.push(oill[i]);
+}
+
+var oill = myVar4.split(", ");
+for(var i=0; i < oill.length; i++) {
+    cost.push(oill[i]);
+}
+
+var oill = myVar5.split(", ");
+for(var i=0; i < oill.length; i++) {
+    sui.push(oill[i]);
+}
+
+var oill = myVar6.split(", ");
+for(var i=0; i < oill.length; i++) {
+    ci.push(oill[i]);
+}
+
+var oill = myVar7.split(" ");
+for(var i=0; i < oill.length; i++) {
+    val.push(oill[i]);
+}
+
+document.getElementById("n1").innerText = val[0];
+document.getElementById("n2").innerText = val[0];
+document.getElementById("n3").innerText = val[0];
+document.getElementById("n4").innerText = val[0];
+document.getElementById("rmse1").innerText = val[1];
+document.getElementById("rmse2").innerText = val[3];
+document.getElementById("rmse3").innerText = val[2];
+document.getElementById("rmse4").innerText = val[4];
+
+var trace1 = {
+  x: d,
+  y: v,
+  name:'Dados Medidos',
+  mode: 'markers'
+};
+
+var trace2 = {
+  x: d,
+  y: ecc,
+  name:'ECC 33',
+  mode: 'markers'
+};
+
+var trace3 = {
+  x: d,
+  y: cost,
+  name:'Cost 231',
+  mode: 'markers'
+};
+
+var trace4 = {
+  x: d,
+  y: sui,
+  name:'SUI',
+  mode: 'markers'
+};
+
+var trace5 = {
+  x: d,
+  y: ci,
+  name:'Close In',
+  mode: 'markers'
+};
+
+
+var data = [trace1, trace2, trace3, trace4, trace5];
+
+var layout = {};
+
+Plotly.newPlot('myDiv1', data, layout);
+</script>

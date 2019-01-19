@@ -1,0 +1,15 @@
+Flask
+Flask-RESTful
+gunicorn
+itsdangerous
+Jinja2
+peewee
+Werkzeug
+numpy
+matplotlib
+haversine
+sympy
+wtforms
+shutil
+datetime
+itertools
