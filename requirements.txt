@@ -10,6 +10,5 @@ matplotlib
 haversine
 sympy
 wtforms
-shutil
 datetime
 itertools
