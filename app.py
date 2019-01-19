@@ -214,11 +214,11 @@ def indoor():
 @app.route("/downIndoor", methods=['GET', 'POST'])
 def downloadIndoor():
 	if request.method == 'POST':
-		#try:
-		shutil.make_archive('Modelo' + ext, 'zip', 'static/img/indoor/' + ext)
-		path =  'Modelo' + ext + '.zip'
-		#except:
-		#return render_template('indexError.html')
+		try:
+			shutil.make_archive('Modelo' + ext, 'zip', 'static/img/indoor/' + ext)
+			path =  'Modelo' + ext + '.zip'
+		except:
+			return render_template('indexError.html')
 
 		return send_file(path, as_attachment=True)
 	
