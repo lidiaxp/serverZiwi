@@ -1170,7 +1170,7 @@ def coberturaUnity():
 	t = float(request.form['k'])
 	bmhz = float(request.form['bmhz'])
 	noise = float(request.form['noise'])
-	noise = float(request.form['n'])
+	n = float(request.form['n'])
 
 	constb = 1.3806503e-23
 	nx = 80
