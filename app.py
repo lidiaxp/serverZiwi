@@ -1155,21 +1155,21 @@ def otimizarTomada(tx, ty, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, 
 
 @app.route("/coberturaUnity", methods=['GET', 'POST'])
 def coberturaUnity():
-	xt = float(request.form['xt'])
-	yt = float(request.form['yt'])
-	modelo = request.form['modelo']
-	x0 = np.asarray(request.form['x0'].split(",")).astype(np.float)
-	y0 = np.asarray(request.form['y0'].split(",")).astype(np.float)
-	ptdo = float(request.form['ptd0'])
-	do = float(request.form['d0'])
-	ptdb = float(request.form['ptdb'])
-	f = float(request.form['fq'])
-	gt = float(request.form['gt'])
-	gr = float(request.form['gr'])
-	t = float(request.form['k'])
-	bmhz = float(request.form['bmhz'])
-	noise = float(request.form['noise'])
-	n = float(request.form['n'])
+	xt = 6 #float(request.form['xt'])
+	yt = 7 #float(request.form['yt'])
+	modelo = 'ci' #request.form['modelo']
+	x0 = [1] #np.asarray(request.form['x0'].split(",")).astype(np.float)
+	y0 = [1] #np.asarray(request.form['y0'].split(",")).astype(np.float)
+	ptdo = -29 #float(request.form['ptd0'])
+	do = 1 #float(request.form['d0'])
+	ptdb = -15 #float(request.form['ptdb'])
+	f = 2400 #float(request.form['fq'])
+	gt = 1 #float(request.form['gt'])
+	gr = 1 #float(request.form['gr'])
+	t = 300 #float(request.form['k'])
+	bmhz = 20 #float(request.form['bmhz'])
+	noise = 0 #float(request.form['noise'])
+	n = 2 #float(request.form['n'])
 
 	constb = 1.3806503e-23
 	nx = 80
