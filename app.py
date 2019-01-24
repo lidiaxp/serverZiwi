@@ -1277,7 +1277,7 @@ def coberturaUnity():
         
 			perda_f[i].append(min(n_teste))
 
-	return str(perda_f)[1:-1] 
+	return str(perda_f)[2:-2] 
 
 def combinations(iterable, r):
     pool = tuple(iterable)
