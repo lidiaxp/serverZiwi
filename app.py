@@ -1155,21 +1155,21 @@ def otimizarTomada(tx, ty, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, 
 
 @app.route("/coberturaUnity", methods=['GET', 'POST'])
 def coberturaUnity():
-	xt = 6 #float(request.form['xt'])
-	yt = 7 #float(request.form['yt'])
-	modelo = 'ci' #request.form['modelo']
-	x0 = [1] #np.asarray(request.form['x0'].split(",")).astype(np.float)
-	y0 = [1] #np.asarray(request.form['y0'].split(",")).astype(np.float)
-	ptdo = -29 #float(request.form['ptd0'])
-	do = 1 #float(request.form['d0'])
-	ptdb = -15 #float(request.form['ptdb'])
-	f = 2400 #float(request.form['fq'])
-	gt = 1 #float(request.form['gt'])
-	gr = 1 #float(request.form['gr'])
-	t = 300 #float(request.form['k'])
-	bmhz = 20 #float(request.form['bmhz'])
-	noise = 0 #float(request.form['noise'])
-	n = 2 #float(request.form['n'])
+	xt = 6
+	yt = 7
+	modelo = 'ci'
+	x0 = [1]
+	y0 = [1]
+	ptdo = -29
+	do = 1
+	ptdb = -15
+	f = 2400
+	gt = 1
+	gr = 1
+	t = 300
+	bmhz = 20
+	noise = 0
+	n = 2
 
 	constb = 1.3806503e-23
 	nx = 80
@@ -1194,13 +1194,13 @@ def coberturaUnity():
 		for k in range(nap):
 			for i in range(ny):
 				for j in range(nx): 
-					di.append(np.sqrt(np.power(dx[j] - x[k], 2) + np.power(dy[i] - y[k], 2)))
+					di.append(np.sqrt(np.power(dx[j] - x0[k], 2) + np.power(dy[i] - y0[k], 2)))
     
 	for k in range(nap):
 		perda = np.zeros((ny,nx));
 		for i in range(ny):
 			for j in range(nx): 
-				d = np.sqrt(np.power(dx[j] - x[k], 2) + np.power(dy[i] - y[k], 2))
+				d = np.sqrt(np.power(dx[j] - x0[k], 2) + np.power(dy[i] - y0[k], 2))
                
 				if modelo == 'fi':
 					B = 5
