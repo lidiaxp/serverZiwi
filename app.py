@@ -1155,21 +1155,21 @@ def otimizarTomada(tx, ty, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, 
 
 @app.route("/coberturaUnity", methods=['GET', 'POST'])
 def coberturaUnity():
-	xt = 6
-	yt = 7
-	modelo = 'ci'
-	x0 = [1]
-	y0 = [1]
-	ptdo = -29
-	do = 1
-	ptdb = -15
-	f = 2400
-	gt = 1
-	gr = 1
-	t = 300
-	bmhz = 20
-	noise = 0
-	n = 2
+	xt = float(request.form['xt'])
+	yt = float(request.form['yt'])
+	modelo = request.form['modelo']
+	x0 = np.asarray(request.form['x0'].split(",")).astype(np.float)
+	y0 = np.asarray(request.form['y0'].split(",")).astype(np.float)
+	ptdo = float(request.form['ptd0'])
+	do = float(request.form['d0'])
+	ptdb = float(request.form['ptdb'])
+	f = float(request.form['fq'])
+	gt = float(request.form['gt'])
+	gr = float(request.form['gr'])
+	t = float(request.form['k'])
+	bmhz = float(request.form['bmhz'])
+	noise = float(request.form['noise'])
+	n = float(request.form['n'])
 
 	constb = 1.3806503e-23
 	nx = 80
