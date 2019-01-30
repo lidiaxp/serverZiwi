@@ -1155,7 +1155,6 @@ def otimizarTomada(tx, ty, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, 
 
 @app.route("/coberturaUnity", methods=['GET', 'POST'])
 def coberturaUnity():
-	'''
 	xt = float(request.form['xt'])
 	yt = float(request.form['yt'])
 	modelo = request.form['modelo']
@@ -1171,23 +1170,6 @@ def coberturaUnity():
 	bmhz = float(request.form['bmhz'])
 	noise = float(request.form['noise'])
 	n = float(request.form['n'])
-	'''
-
-	xt = 10
-	yt = 10
-	modelo = 'mk'
-	x0 = [5]
-	y0 = [5]
-	ptdo = -29
-	do = 1
-	ptdb = -15
-	f = 2400
-	gt = 1
-	gr = 1
-	t = 300
-	bmhz = 20
-	noise = 0
-	n = 2
 	
 	constb = 1.3806503e-23
 	nx = 80
@@ -1202,7 +1184,7 @@ def coberturaUnity():
 	perda = []
 	perdas = []
 	perda_f = []
-	'''
+	
 	if modelo == 'mk':
 		frase = "h 0 6 4 4 1\nh 0 6 5 5 2\nv 1.5 1.5 0 4 3"
 		ph = []
@@ -1221,11 +1203,6 @@ def coberturaUnity():
         			p1 = [[float(conteudo.split(" ")[1]), float(conteudo.split(" ")[2])], [float(conteudo.split(" ")[3]), float(conteudo.split(" ")[4])]]
         			pv.append(p1)
         			modelv.append(int(conteudo.split(" ")[5]))
-    	'''
-	ph = [[[0.0, 6.0], [4.0, 4.0]], [[0.0, 6.0], [5.0, 5.0]]]
-	pv = [[[1.5, 1.5], [0.0, 4.0]]]
-	modelh = [1, 2]
-	modelv = [3]
 	
 	for i in range(ny):
 		perda.append([])
@@ -1265,7 +1242,7 @@ def coberturaUnity():
             
 					oi = Lf + 10 * n * np.log10(d) 
                 
-					a = (dy[i] - y[k]) / (dx[j] - x[k])
+					a = (dy[i] - y0[k]) / (dx[j] - x0[k])
 					b = dy[i] - (a*dx[j])
             
 					for w in range(len(ph)):
@@ -1274,7 +1251,7 @@ def coberturaUnity():
 						x1 = ph[w][0][0]
 						x2 = ph[w][0][1]
 						xr = [x1, x2]
-						yr = [y[k], dy[i]]
+						yr = [y0[k], dy[i]]
             
 						if(y_test < max(yr) and y_test>min(yr) and (x_test<max(xr)) and x_test>min(xr)):
 							if modelh[w] == 1:
@@ -1290,7 +1267,7 @@ def coberturaUnity():
 						y1 = pv[w][1][0]
 						y2 = pv[w][1][1]
 						yr = [y1, y2]
-						xr = [x[k], dx[j]]
+						xr = [x0[k], dx[j]]
                 
 						if(y_test<max(yr) and y_test>min(yr)) and (x_test<max(xr) and x_test>min(xr)):
 							if modelv[w] == 1:
@@ -1319,8 +1296,7 @@ def coberturaUnity():
         
 			perda_f[i].append(min(n_teste))
 
-	#return str(perda_f)[2:-2] 
-	return ph
+	return str(perda_f)[2:-2] 
 	
 def combinations(iterable, r):
     pool = tuple(iterable)
