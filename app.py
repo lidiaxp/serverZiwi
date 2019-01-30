@@ -1170,7 +1170,6 @@ def coberturaUnity():
 	bmhz = float(request.form['bmhz'])
 	noise = float(request.form['noise'])
 	n = float(request.form['n'])
-	frase = request.form['paredes']
 
 	constb = 1.3806503e-23
 	nx = 80
@@ -1185,8 +1184,10 @@ def coberturaUnity():
 	perda = []
 	perdas = []
 	perda_f = []
-	'''
+	
 	if modelo == 'mk':
+		print("entroi")
+		frase = request.form['paredes']
 		ph = []
 		pv = []
 		modelh = []
@@ -1203,7 +1204,7 @@ def coberturaUnity():
         			p1 = [[float(conteudo.split(" ")[1]), float(conteudo.split(" ")[2])], [float(conteudo.split(" ")[3]), float(conteudo.split(" ")[4])]]
         			pv.append(p1)
         			modelv.append(int(conteudo.split(" ")[5]))
-    	'''
+    	
 	ph = [[[0.0, 6.0], [4.0, 4.0]], [[0.0, 6.0], [5.0, 5.0]]]
 	pv = [[[1.5, 1.5], [0.0, 4.0]]]
 	modelh = [1, 2]
