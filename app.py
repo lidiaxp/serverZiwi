@@ -1155,6 +1155,7 @@ def otimizarTomada(tx, ty, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, 
 
 @app.route("/coberturaUnity", methods=['GET', 'POST'])
 def coberturaUnity():
+	'''
 	xt = float(request.form['xt'])
 	yt = float(request.form['yt'])
 	modelo = request.form['modelo']
@@ -1170,7 +1171,24 @@ def coberturaUnity():
 	bmhz = float(request.form['bmhz'])
 	noise = float(request.form['noise'])
 	n = float(request.form['n'])
+	'''
 
+	xt = 10
+	yt = 10
+	modelo = 'mk'
+	x0 = [5]
+	y0 = [5]
+	ptdo = -29
+	do = 1
+	ptdb = -15
+	f = 2400
+	gt = 1
+	gr = 1
+	t = 300
+	bmhz = 20
+	noise = 0
+	n = 2
+	
 	constb = 1.3806503e-23
 	nx = 80
 	ny = 40
@@ -1186,8 +1204,7 @@ def coberturaUnity():
 	perda_f = []
 	
 	if modelo == 'mk':
-		print("entroi")
-		frase = request.form['paredes']
+		frase = "h 0 6 4 4 1\nh 0 6 5 5 2\nv 1.5 1.5 0 4 3"
 		ph = []
 		pv = []
 		modelh = []
@@ -1302,8 +1319,9 @@ def coberturaUnity():
         
 			perda_f[i].append(min(n_teste))
 
-	return str(perda_f)[2:-2] 
-
+	#return str(perda_f)[2:-2] 
+	return ph
+	
 def combinations(iterable, r):
     pool = tuple(iterable)
     n = len(pool)
