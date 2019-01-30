@@ -1204,6 +1204,11 @@ def coberturaUnity():
         			pv.append(p1)
         			modelv.append(int(conteudo.split(" ")[5]))
     
+	ph = [[[0.0, 6.0], [4.0, 4.0]], [[0.0, 6.0], [5.0, 5.0]]]
+	pv = [[[1.5, 1.5], [0.0, 4.0]]]
+	modelh = [1, 2]
+	modelv = [3]
+	
 	for i in range(ny):
 		perda.append([])
 		perda_f.append([])
