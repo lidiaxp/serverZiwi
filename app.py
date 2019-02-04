@@ -240,14 +240,14 @@ def comparision():
 			file = request.files['compararFile']
 			filename = secure_filename(file.filename) 
 			file.save(os.path.join(filename))
+
+			Lf = 20 * np.log10(4 * np.pi * do /(f * (10**3)/(3*(10**8)))) + gt + gr
+			valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0, y0)
+			pathN, n, Ln5, Ln4, Ln3, Ln2, Ln1, Lnn, dns = calculanComGrafico(valores, distancia, Lf, do)
+			pathComparar, itu, ci, mk, o = comparar(distancia, do, f, Lf, n, ptdb, valores)
+			info = str(n) + " " + str(rmse(o, itu)) + " " + str(rmse(o, ci)) + " " +  str(rmse(o, mk))
 		except:
 			return render_template('indexError.html')
-
-		Lf = 20 * np.log10(4 * np.pi * do /(f * (10**3)/(3*(10**8)))) + gt + gr
-		valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0, y0)
-		pathN, n, Ln5, Ln4, Ln3, Ln2, Ln1, Lnn, dns = calculanComGrafico(valores, distancia, Lf, do)
-		pathComparar, itu, ci, mk, o = comparar(distancia, do, f, Lf, n, ptdb, valores)
-		info = str(n) + " " + str(rmse(o, itu)) + " " + str(rmse(o, ci)) + " " +  str(rmse(o, mk))
 	
 	return render_template('fifth.html', algo=algo, itu=itu, medido=o, ci=ci, mk=mk, infoCom=info, dist1=distancia, n1=n, Ln5=Ln5, Ln4=Ln4, Ln3=Ln3, Ln2=Ln2, Ln1=Ln1, Lnn=Lnn, dns=dns)
 
@@ -544,13 +544,13 @@ def hello2():
 			file = request.files['myfile']
 			filename = secure_filename(file.filename) 
 			file.save(os.path.join(filename))
+
+			Lf = 20 * np.log10(4 * np.pi * do /(f * (10**3)/(3*(10**8)))) + gt + gr
+			valores, campoeletrico, distancia = lerArquivo(filename, lat, longg)
+
+			n = calculan(distancia, valores, Lf)
 		except:
-			return render_template('indexError.html')
-
-		Lf = 20 * np.log10(4 * np.pi * do /(f * (10**3)/(3*(10**8)))) + gt + gr
-		valores, campoeletrico, distancia = lerArquivo(filename, lat, longg)
-
-		n = calculan(distancia, valores, Lf)
+			return render_template('indexError.html')		
 
 		for i in range(len(distancia)):
 			d.append(distancia[i])
