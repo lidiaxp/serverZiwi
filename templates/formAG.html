@@ -1,344 +1,173 @@
-<section id="comparacao" style="background-color: #FF9800">
-	<br><br>
-	<div class="row">
-    	<div class="container" style="text-align: center;"> 
-      		<div class="row align-items-center justify-content-between">
-        		<div class="col-lg-6 home-about-left"> 
-          			<br><br>
-          			<form action="comparacao" method="POST" enctype="multipart/form-data">
-            			<div class="form-group">
-              				<label for="freq1">Frequência (MHz)</label>
-              				<input step="any" type="number" id="freq1" name="freq1" class="form-control" placeholder="Insira a frequência em MHz">
-            			</div>
-            			<div class="form-group">
-              				<label>Distância Mínima (m)</label>
-              				<input step="any" type="number" name="d01" id="d01" class="form-control" placeholder="Insira a distância mínima da medição em metros">
-            			</div>
-            			<div class="form-group">
-              				<label>Potência de Transmissão (dBm)</label>
-              				<input step="any" type="number" name="ptdb1" id="ptdb1" class="form-control" placeholder="Insira a potência de transmissão">
-            			</div>
-            			<div class="form-group">
-              				<div class="row">
-                				<div class="col-lg-6">
-                  					<label>Ganho da Antena Transmissora (dB)</label>
-              						<input step="any" type="number" id="gt1" name="gt1" class="form-control" placeholder="Insira o ganho da antena transmissora em dB">
-                				</div>
-                				<div class="col-lg-6">
-                  					<label>Ganho da Antena Receptora (dB)</label>
-              						<input step="any" type="number" id="gr1" name="gr1" class="form-control" placeholder="Insira o ganho da antena receptora em dB">
-                				</div>
-              				</div>
-            			</div>
-            			<div class="form-group">
-              				<div class="row">
-                				<div class="col-lg-6">
-                  					<label>Posição X do Roteador (m)</label>
-              						<input step="any" type="number" id="x01" name="x01" class="form-control">
-              						<small style="color: white">Esse modo aceita apenas um roteador</small>
-                				</div>
-                				<div class="col-lg-6">
-                  					<label>Posição Y do Roteador (m)</label>
-              						<input step="any" type="number" id="y01" name="y01" class="form-control">
-              						<small style="color: white">Esse modo aceita apenas um roteador</small>
-                				</div>
-              				</div>
-            			</div>
-            			<div class="form-group">
-              				<label>Inserir o Arquivo com as Medições Outdoor (.txt)</label>
-              				<input type="file" class="form-control-file" name="compararFile">
-            			</div>
-            			<br>
-            			<div style="text-align: center;">
-              				<button type="submit" class="btn btn-primary btn-xl">Comparar e Calcular 'n'</button>   
-            			</div>
-          			</form>
-        		</div>
-        		<div class="col-lg-6 home-about-right">
-          			<div style="text-align: center">
-            			<br><br>
-            			<h1 id="estado" style="color: #FFF; text-align: center">Comparação entre os modelos e os dados medidos</h1>
-            			<div id="GraphComparacao" style="width: 700px; height: 500px;">
-            				<br>
-            				<form action="compararDown" method="POST" role="form">
-              					<button type="submit" class="btn btn-primary btn-xl">Download</button>
-            				</form>
-          				</div>
-       	 			</div>
-      			</div>
-    		</div>
-  		</div>
-  	</div>
-  	<br><br><br><br>
-</section>
-
-<section id="calculos" style="background-color: #AA00FF">
-	<br><br>
-	<div class="container" style="text-align: center">
-		{% if algo%}
-		<script>
-   			 $(function() { 
-      			 location.hash = "#{{algo}}" 
-    			});
-			</script>
-		<h1 id="estado" style="color: #FFF">Expoente de Perda de Percurso (n)</h1>
-		{% else %}
-		<h1 style="color: #FFF">Os dados aparecerão aqui a partir dos cálculos da seção de comparação</h1>
-		{% endif %}
-		<div class="row">
-      <div class="col-lg-12">
-        <div id="GraphCalculos" style="width: 700px; height: 500px">    
-      </div>
-    </div>
+<section id="otimizacao" style="background-color: #FF9800">
+	<div class="container" style="margin-top: 80px">
+		<div style="text-align: center;">
+			<form action="indoorAG" method="POST" enctype="multipart/form-data">
+				<div class="row">
+					<div class="radio col-lg-2">
+  						<label><input type="radio" name="optradio" id="sem" onclick="semtomada()" value="sem" checked>Sem Tomadas</label>
+					</div>
+					<div class="radio col-lg-2">
+  						<label><input type="radio" name="optradio" id="com" onclick="comtomada()" value="com">Com Tomadas</label>
+					</div>
+					<div class="col-lg-3">
+            <label>Eixo X das Tomadas (m)</label>
+            <input id="txx" name="txx" class="form-control" placeholder="Ex: 5.5,8,7.3">
+            <small>Adicione as tomadas depois de vírgulas e não coloque espaço</small>
+          </div>
+          <div class="col-lg-3">
+          	<label>Eixo Y das Tomadas (m)</label>
+          	<input id="tyy" name="tyy" class="form-control" placeholder="Ex: 5.5,8,7.3">
+          	<small>Adicione as tomadas depois de vírgulas e não coloque espaço</small>
+          </div>
+          <div class="col-lg-2">
+            <label>Número de Roteadores</label>
+            <input type="number" id="na2" name="na2" class="form-control">
+          </div>
+				</div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label>Largura Máxima da Sala (m)</label>
+            <input step="any" type="number" id="xt2" name="xt2" class="form-control">
+          </div>
+          <div class="col-lg-6">
+            <label>Comprimento Máximo da Sala (m)</label>
+            <input step="any" type="number" id="yt2" name="yt2" class="form-control">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label>Eixo X dos Roteadores (m)</label>
+            <input type="text" id="x02" name="x02" class="form-control" placeholder="Ex: 5.5,8,7.3">
+          </div>
+          <div class="col-lg-6">
+            <label>Eixo Y dos Roteadores (m)</label>
+            <input type="text" id="y02" name="y02" class="form-control" placeholder="Ex: 5.5,8,7.3">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label>Potência Recebida no Ponto d0 (dBm)</label>
+            <input step="any" type="ptd0" id="ptd02" name="ptd02" class="form-control">
+          </div>
+          <div class="col-lg-6">
+            <label>Distância Mínima (m)</label>
+            <input step="any" type="number" id="d02" name="d02" class="form-control">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label>Potência de Transmissão (dBm)</label>
+            <input step="any" type="number" id="ptdb2" name="ptdb2" class="form-control">
+          </div>
+          <div class="col-lg-6">
+            <label>Frequência (MHz)</label>
+            <input step="any" type="number" id="fq2" name="fq2" class="form-control">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label>Ganho da Antena Transmissora (dB)</label>
+            <input step="any" type="number" id="gt2" name="gt2" class="form-control">
+          </div>
+          <div class="col-lg-6">
+            <label>Ganho da Antena Receptora (dB)</label>
+            <input step="any" type="number" id="gr2" name="gr2" class="form-control">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label>Temperatura (K)</label>
+            <input step="any" type="number" id="k2" name="k2" class="form-control" placeholder="A temperatura deve ser em Kelvin">
+            <small>A temperatura ambiente em Kelvin é 300</small>
+          </div>
+          <div class="col-lg-4">
+            <label>Largura de Banda (MHz)</label>
+            <input step="any" type="number" id="bmhz2" name="bmhz2" class="form-control">
+            <small>Costuma-se usar 20</small>
+          </div>
+          <div class="col-lg-4">
+            <label>Fator de Ruído</label>
+            <input step="any" type="number" id="noise2" name="noise2" class="form-control" placeholder="noisefactor">
+            <small>Costuma-se usar 0</small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <label>Ambiente</label>
+            <select class="form-control" id="nameAmbiente2" name="nameAmbiente2">
+              <option>----------</option>
+              <option>Corredor</option>
+              <option>Ambientes Grandes e Vazios</option>
+              <option>Ambientes Mobiliados</option>
+              <option>Ambientes Demasiadamente Mobiliados</option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label>Arquivo com as Medições (.txt)</label>
+              <input type="file" class="form-control-file" name="myfileIN2">
+              <small>(Opcional, caso defina o ambiente)</small>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label>Inserir o Arquivo com as Paredes (.txt)</label>
+              <input type="file" class="form-control-file" name="paredes2">
+              <small>(Opcional, exceto para o Motley Keenan)</small>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label>Modelo</label>
+              <select class="form-control" id="nameModels2" name="nameModels2">
+                <option>Motley Keenan</option>
+                <option>Close IN</option>
+                <option>Floating Interception</option>
+                <option>ITU-R P.1238-8</option>
+              </select>
+            </div>
+          </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <label>Número de Interações do AG</label>
+            <input type="number" id="intAG" name="intAG" class="form-control">
+            <small>Quanto mais interações mais demorado será</small>
+          </div>
+          <div class="col-lg-6">
+            <label>Limiar de Qualidade (dB)</label>
+            <input step="any" type="number" id="limAG" name="limAG" class="form-control" placeholder="Ex: -60">
+            <small>Potência recebida considerada boa para o seu caso</small>         
+          </div>
+        </div>
+        <br><br>
+        <div class="col-lg-12">
+          <button type="submit" class="btn btn-primary btn-xl">Simular</button>   
+        </div>
+			</form>
+		</div>
 	</div>
-
-	<br><br>
-	
-	<div>
-    <table class="table">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">Close In</th>
-          <th scope="col">Motley Keenan</th>
-          <th scope="col">ITU-R P.1238-8</th>
-          <th scope="col">Floating Interception</th>
-        </tr>
-      </thead>
-      <tbody style="background-color: #FFF">
-        <tr>
-          <th scope="row">n</th>
-          <td id="n11">0</td>
-          <td id="n21">0</td>
-          <td id="n31">0</td>
-          <td id="n41">0</td>
-        </tr>
-        <tr>
-          <th scope="row">RMSE</th>
-          <td id="rmse11">0</td>
-          <td id="rmse21">0</td>
-          <td id="rmse31">0</td>
-          <td id="rmse41">0</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <br><br>
+	<br><br><br><br><br><br>
 </section>
-
-<script type="text/javascript"> window.myVar1 = "{{dist1}}"; window.myVar2 = "{{itu}}"; window.myVar3 = "{{ci}}"; window.myVar4 = "{{mk}}"; window.myVar5 = "{{infoCom}}";window.lnn = "{{Lnn}}";window.ln1 = "{{Ln1}}";window.ln2 = "{{Ln2}}";window.ln3 = "{{Ln3}}";window.ln4 = "{{Ln4}}";window.ln5 = "{{Ln5}}";window.dns = "{{dns}}";window.myVar6 = "{{o}}";</script>
 
 <script type="text/javascript">
+	document.getElementById("txx").readOnly = true;
+	document.getElementById("tyy").readOnly = true;
+	document.getElementById("na2").readOnly = true;
+  document.getElementById("intAG").readOnly = false;
+  document.getElementById("limAG").readOnly = false;
 
-myVar1 = myVar1.substring(1, myVar1.length - 1);
-myVar2 = myVar2.substring(1, myVar2.length - 1);
-myVar3 = myVar3.substring(1, myVar3.length - 1);
-myVar4 = myVar4.substring(1, myVar4.length - 1);
-//myVar5 = myVar5.substring(1, myVar5.length - 1);
-myVar6 = myVar6.substring(1, myVar6.length - 1);
+	function comtomada(){
+		document.getElementById("txx").readOnly = false;
+		document.getElementById("tyy").readOnly = false;
+    document.getElementById("na2").readOnly = false;
+    document.getElementById("intAG").readOnly = true;
+    document.getElementById("limAG").readOnly = true;
+	}
 
-d  = [];
-v = [];
-ci = [];
-mk = [];
-itu = [];
-val = [];
-
-
-var oill = myVar1.split(", ");
-for(var i=0; i < oill.length; i++) {
-    d.push(oill[i]);
-}
-
-
-var oill = myVar6.split(", ");
-for(var i=0; i < oill.length; i++) {
-    v.push(oill[i]);
-}
-
-var oill = myVar2.split(", ");
-for(var i=0; i < oill.length; i++) {
-    itu.push(oill[i]);
-}
-
-var oill = myVar3.split(", ");
-for(var i=0; i < oill.length; i++) {
-    ci.push(oill[i]);
-}
-
-var oill = myVar4.split(", ");
-for(var i=0; i < oill.length; i++) {
-    mk.push(oill[i]);
-}
-
-var oill = myVar5.split(" ");
-for(var i=0; i < oill.length; i++) {
-    val.push(oill[i]);
-}
-
-
-
-document.getElementById("n11").innerText = val[0];
-document.getElementById("n21").innerText = val[0];
-document.getElementById("n31").innerText = val[0];
-document.getElementById("n41").innerText = val[0];
-document.getElementById("rmse11").innerText = val[2];
-document.getElementById("rmse21").innerText = val[3];
-document.getElementById("rmse31").innerText = val[1];
-
-
-
-var trace1 = {
-  x: d,
-  y: v,
-  name:'Dados Medidos',
-  mode: 'markers'
-};
-
-var trace2 = {
-  x: d,
-  y: ci,
-  name:'Close In',
-  mode: 'markers'
-};
-
-var trace3 = {
-  x: d,
-  y: mk,
-  name:'Motley Keenan',
-  mode: 'markers'
-};
-
-var trace4 = {
-  x: d,
-  y: itu,
-  name:'ITU-R P.1238-8',
-  mode: 'markers'
-};
-
-var data = [trace1, trace2, trace3, trace4];
-
-var layout = {};
-
-Plotly.newPlot('GraphComparacao', data, layout);
-
-
-
-lnn = lnn.substring(1, lnn.length - 1);
-ln1 = ln1.substring(1, ln1.length - 1);
-ln2 = ln2.substring(1, ln2.length - 1);
-ln3 = ln3.substring(1, ln3.length - 1);
-ln4 = ln4.substring(1, ln4.length - 1);
-ln5 = ln5.substring(1, ln5.length - 1);
-dns = dns.substring(1, dns.length - 1);
-
-nn  = [];
-n1 = [];
-n2 = [];
-n3 = [];
-n4 = [];
-n5 = [];
-dn = [];
-
-var oill = lnn.split(", ");
-for(var i=0; i < oill.length; i++) {
-    nn.push(oill[i]);
-}
-
-var oill = ln1.split(", ");
-for(var i=0; i < oill.length; i++) {
-    n1.push(oill[i]);
-}
-
-var oill = ln2.split(", ");
-for(var i=0; i < oill.length; i++) {
-    n2.push(oill[i]);
-}
-
-var oill = ln3.split(", ");
-for(var i=0; i < oill.length; i++) {
-    n3.push(oill[i]);
-}
-
-var oill = ln4.split(", ");
-for(var i=0; i < oill.length; i++) {
-    n4.push(oill[i]);
-}
-
-var oill = ln5.split(" ");
-for(var i=0; i < oill.length; i++) {
-    n5.push(oill[i]);
-}
-
-var oill = dns.split(" ");
-for(var i=0; i < oill.length; i++) {
-    dn.push(oill[i]);
-}
-
-var trace1 = {
-  x: dn,
-  y: nn,
-  name:'n = ' + val[0],
-  mode: 'markers'
-  ,
-  marker: {
-    color: 'rgb(255, 0, 0)'
-    }
-};
-
-var trace2 = {
-  x: dn,
-  y: n1,
-  name:'n = 1',
-  mode: 'markers',
-  marker: {
-    color: 'rgb(0, 0, 0)'
-    }
-};
-
-var trace3 = {
-  x: dn,
-  y: n2,
-  name:'n = 2',
-  mode: 'markers',
-  marker: {
-    color: 'rgb(0, 0, 0)'
-    }
-};
-
-var trace4 = {
-  x: dn,
-  y: n3,
-  name:'n = 3',
-  mode: 'markers',
-  marker: {
-    color: 'rgb(0, 0, 0)'
-    }
-};
-
-var trace5 = {
-  x: dn,
-  y: n4,
-  name:'n = 4',
-  mode: 'markers',
-  marker: {
-    color: 'rgb(0, 0, 0)'
-    }
-};
-
-var trace6 = {
-  x: dn,
-  y: n5,
-  name:'n = 5',
-  mode: 'markers',
-  marker: {
-    color: 'rgb(0, 0, 0)'
-    }
-};
-
-var data = [trace1, trace2, trace3, trace4, trace5, trace6];
-
-var layout = {};
-
-Plotly.newPlot('GraphCalculos', data, layout);
+	function semtomada(){
+		document.getElementById("txx").readOnly = true;
+		document.getElementById("tyy").readOnly = true;
+	  document.getElementById("na2").readOnly = true;
+    document.getElementById("intAG").readOnly = false;
+    document.getElementById("limAG").readOnly = false;
+  }
 </script>
