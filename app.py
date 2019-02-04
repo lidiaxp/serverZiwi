@@ -133,7 +133,7 @@ def indoor():
 			perda_f, non_cob = cobertura(x0, y0, ext, ny, nx, nap, 0, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px)
 		ax.plot(x0, y0, 'o', color=cor)
 		plt.title("Perda pelo Modelo " + tit)
-		plt.imshow(perda_f,cmap='jet',extent=[0,6,0,7.5],origin='lower')
+		plt.imshow(perda_f,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 		plt.colorbar(label="dB")
 
 		path = 'static/img/indoor/' + ext + '/perda' + name + '.png'
@@ -145,7 +145,7 @@ def indoor():
 			ax = plotarParedes(ax, ph, pv, modelh, modelv)
 		ax.plot(x0, y0, 'o', color=cor)
 		plt.title("Potência Recebida pelo " + tit)
-		plt.imshow(prmk,cmap='jet',extent=[0,6,0,7.5],origin='lower')
+		plt.imshow(prmk,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 		plt.colorbar(label="dBm")
 
 		path = 'static/img/indoor/' + ext + '/pr' + name + '.png'
@@ -158,7 +158,7 @@ def indoor():
 			ax = plotarParedes(ax, ph, pv, modelh, modelv)
 		ax.plot(x0, y0, 'o', color=cor)
 		plt.title("SNR pelo Modelo " + tit)
-		plt.imshow(snrmk,cmap='jet',extent=[0,6,0,7.5],origin='lower')
+		plt.imshow(snrmk,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 		plt.colorbar(label="dB")
 
 		path = 'static/img/indoor/' + ext + '/snr' + name + '.png'
@@ -170,7 +170,7 @@ def indoor():
 			ax = plotarParedes(ax, ph, pv, modelh, modelv)
 		ax.plot(x0, y0, 'o', color=cor)
 		plt.title("Intensidade pelo Modelo " + tit)
-		plt.imshow(itmk,cmap='jet',extent=[0,6,0,7.5],origin='lower', vmax = 1)
+		plt.imshow(itmk,cmap='jet',extent=[0,xt,0,yt],origin='lower', vmax = 1)
 		plt.colorbar(label="V/m")
 
 		path = 'static/img/indoor/' + ext + '/ce' + name + '.png'
@@ -183,7 +183,7 @@ def indoor():
 			ax = plotarParedes(ax, ph, pv, modelh, modelv)
 		ax.plot(x0, y0, 'o', color=cor)
 		plt.title("SINR pelo Modelo " + tit)
-		plt.imshow(sinrmk,cmap='jet',extent=[0,6,0,7.5],origin='lower')
+		plt.imshow(sinrmk,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 		plt.colorbar(label="dB")
 
 		path = 'static/img/indoor/' + ext + '/sinr' + name + '.png'
@@ -203,7 +203,7 @@ def indoor():
 			ax = plotarParedes(ax, ph, pv, modelh, modelv)
 		ax.plot(x0, y0, 'o', color=cor)
 		plt.title("Capacidade pelo Modelo " + tit)
-		plt.imshow(cpmk,cmap='jet',extent=[0,6,0,7.5],origin='lower')
+		plt.imshow(cpmk,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 		plt.colorbar(label="mbits/s")
 
 		path = 'static/img/indoor/' + ext + '/capacidade' + name + '.png'
@@ -400,7 +400,7 @@ def oti():
 				perda_f = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px)[0]  
 			ax.plot(bestX, bestY, 'o', color=cor)
 			plt.title("Melhor Perda pelo Modelo Motley Keenan\nMelhor X: " + str(bestX) + "\nMelhor Y: " + str(bestY))
-			plt.imshow(perda_f,cmap='jet',extent=[0,6,0,7.5],origin='lower')
+			plt.imshow(perda_f,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 			plt.colorbar(label="dB")
 
 			path = 'static/img/indoor/AG/' + extAG + '/perda' + name + '.png'
@@ -412,7 +412,7 @@ def oti():
 				ax = plotarParedes(ax, ph, pv, modelh, modelv)
 			ax.plot(bestX, bestY, 'o', color=cor)
 			plt.title("Melhor Potência Recebida pelo " + tit)
-			plt.imshow(prmk,cmap='jet',extent=[0,6,0,7.5],origin='lower')
+			plt.imshow(prmk,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 			plt.colorbar(label="dBm")
 
 			path = 'static/img/indoor/AG/' + extAG + '/pr' + name + '.png'
@@ -425,7 +425,7 @@ def oti():
 				ax = plotarParedes(ax, ph, pv, modelh, modelv)
 			ax.plot(bestX, bestY, 'o', color=cor)
 			plt.title("Melhor SNR pelo Modelo " + tit)
-			plt.imshow(snrmk,cmap='jet',extent=[0,6,0,7.5],origin='lower')
+			plt.imshow(snrmk,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 			plt.colorbar(label="dB")
 
 			path = 'static/img/indoor/AG/' + extAG + '/snr' + name + '.png'
@@ -437,7 +437,7 @@ def oti():
 				ax = plotarParedes(ax, ph, pv, modelh, modelv)
 			ax.plot(bestX, bestY, 'o', color=cor)
 			plt.title("Melhor Intensidade pelo Modelo " + tit)
-			plt.imshow(itmk,cmap='jet',extent=[0,6,0,7.5],origin='lower', vmax = 1)
+			plt.imshow(itmk,cmap='jet',extent=[0,xt,0,yt],origin='lower', vmax = 1)
 			plt.colorbar(label="V/m")
 
 			path = 'static/img/indoor/AG/' + extAG + '/ce' + name + '.png'
@@ -450,7 +450,7 @@ def oti():
 				ax = plotarParedes(ax, ph, pv, modelh, modelv)
 			ax.plot(bestX, bestY, 'o', color=cor)
 			plt.title("Melhor SINR pelo Modelo " + tit)
-			plt.imshow(sinrmk,cmap='jet',extent=[0,6,0,7.5],origin='lower')
+			plt.imshow(sinrmk,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 			plt.colorbar(label="dB")
 
 			path = 'static/img/indoor/AG/' + extAG + '/sinr' + name + '.png'
@@ -470,7 +470,7 @@ def oti():
 				ax = plotarParedes(ax, ph, pv, modelh, modelv)
 			ax.plot(bestX, bestY, 'o', color=cor)
 			plt.title("Melhor Capacidade pelo Modelo " + tit)
-			plt.imshow(cpmk,cmap='jet',extent=[0,6,0,7.5],origin='lower')
+			plt.imshow(cpmk,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 			plt.colorbar(label="mbits/s")
 
 			path = 'static/img/indoor/AG/' + extAG + '/capacidade' + name + '.png'
@@ -1144,7 +1144,7 @@ def otimizarTomada(tx, ty, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, 
 		ax = plotarParedes(ax, ph, pv, modelh, modelv)
 	perda_fi, non_cob = cobertura(non[0][0], non[0][1], extAG, ny, nx, len(tentX), limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px)
 	plt.title("Perda pelo Modelo " + tit + "\nEixo X: " + str(non[0][0]) + "\nEixo Y: " + str(non[0][1]))
-	plt.imshow(perda_fi,cmap='jet',extent=[0,6,0,7.5],origin='lower')
+	plt.imshow(perda_fi,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 	plt.colorbar(label="dB")
 
 	path = 'static/img/indoor/AG/' + extAG + '/otimizacaoTomada' + nameAG + '.png'
