@@ -138,7 +138,9 @@
         </div>
         <br><br>
         <div class="col-lg-12">
-          <button type="submit" class="btn btn-primary btn-xl">Simular</button>   
+          <button type="submit" class="btn btn-primary btn-xl" onclick="myFunction()">Simular</button>
+          <div id="demo">
+          </div>
         </div>
 			</form>
 		</div>
@@ -159,6 +161,11 @@
     document.getElementById("intAG").readOnly = true;
     document.getElementById("limAG").readOnly = true;
 	}
+
+  function myFunction(){
+    var element = document.getElementById('demo');
+    element.innerHTML = '<img src="static/img/olhaogif.gif">'
+  }
 
 	function semtomada(){
 		document.getElementById("txx").readOnly = true;
