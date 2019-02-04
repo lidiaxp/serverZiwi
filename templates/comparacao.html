@@ -8,25 +8,25 @@
           			<form action="comparacao" method="POST" enctype="multipart/form-data">
             			<div class="form-group">
               				<label for="freq1">Frequência (MHz)</label>
-              				<input step="any" type="number" id="freq1" name="freq1" class="form-control" placeholder="Insira a frequência em MHz">
+              				<input step="any" type="number" id="freq1" name="freq1" class="form-control" placeholder="Insira a frequência em MHz" value="2400">
             			</div>
             			<div class="form-group">
               				<label>Distância Mínima (m)</label>
-              				<input step="any" type="number" name="d01" id="d01" class="form-control" placeholder="Insira a distância mínima da medição em metros">
+              				<input step="any" type="number" name="d01" id="d01" class="form-control" placeholder="Insira a distância mínima da medição em metros" value="1">
             			</div>
             			<div class="form-group">
               				<label>Potência de Transmissão (dBm)</label>
-              				<input step="any" type="number" name="ptdb1" id="ptdb1" class="form-control" placeholder="Insira a potência de transmissão">
+              				<input step="any" type="number" name="ptdb1" id="ptdb1" class="form-control" placeholder="Insira a potência de transmissão" value="-15">
             			</div>
             			<div class="form-group">
               				<div class="row">
                 				<div class="col-lg-6">
                   					<label>Ganho da Antena Transmissora (dB)</label>
-              						<input step="any" type="number" id="gt1" name="gt1" class="form-control" placeholder="Insira o ganho da antena transmissora em dB">
+              						<input step="any" type="number" id="gt1" name="gt1" class="form-control" placeholder="Insira o ganho da antena transmissora em dB" value="1">
                 				</div>
                 				<div class="col-lg-6">
                   					<label>Ganho da Antena Receptora (dB)</label>
-              						<input step="any" type="number" id="gr1" name="gr1" class="form-control" placeholder="Insira o ganho da antena receptora em dB">
+              						<input step="any" type="number" id="gr1" name="gr1" class="form-control" placeholder="Insira o ganho da antena receptora em dB" value="1">
                 				</div>
               				</div>
             			</div>
@@ -35,17 +35,17 @@
                 				<div class="col-lg-6">
                   					<label>Posição X do Roteador (m)</label>
               						<input step="any" type="number" id="x01" name="x01" class="form-control">
-              						<small style="color: white">Esse modo aceita apenas um roteador</small>
+              						<small>Esse modo aceita apenas um roteador</small>
                 				</div>
                 				<div class="col-lg-6">
                   					<label>Posição Y do Roteador (m)</label>
               						<input step="any" type="number" id="y01" name="y01" class="form-control">
-              						<small style="color: white">Esse modo aceita apenas um roteador</small>
+              						<small>Esse modo aceita apenas um roteador</small>
                 				</div>
               				</div>
             			</div>
             			<div class="form-group">
-              				<label>Inserir o Arquivo com as Medições Outdoor (.txt)</label>
+              				<label>Inserir o Arquivo com as Medições Indoor (.txt)</label>
               				<input type="file" class="form-control-file" name="compararFile">
             			</div>
             			<br>
