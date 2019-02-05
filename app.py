@@ -516,6 +516,20 @@ def openCenario():
 	
 	return render_template('third.html')
 
+@app.route("/downAmbiente", methods=['GET', 'POST'])
+def downAmbiente():
+	path = "static/img/ambiente"
+	try:
+		os.mkdir(path)
+	except FileExistsError:	
+		shutil.rmtree(path)
+		os.mkdir(path)
+
+	file = open(path + "/ambiente.txt","w") 
+	file.write(request.form['texto'])  
+	file.close() 
+	return send_file(path + '/ambiente.txt', as_attachment=True)
+
 @app.route("/outdoor", methods=['GET', 'POST'])
 def hello2():
 	if request.method == 'POST':
