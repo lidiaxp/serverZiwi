@@ -1,33 +1,61 @@
-<section id="choose" class="services-section" > <!--style="background-color: #FFCCBC"-->
+<!-- Navigation -->
+    <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav" style="background-color: #EF6C00">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">Ziwi</a>
+        <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive" style="text-align: center;">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#modelos">     </a>
+            </li>
+          </ul>
+            <h4 style="color: #FFF">Crie o Cenário Aqui</h4>
+        </div>
+      </div>
+    </nav>
+
+<section class="services-section" > <!--style="background-color: #FFCCBC"-->
+  <br><br>
   <div >
     <div>   
       <div>
-        <div style="text-align: center; margin-top: -80px">
-          <h1>Crie o Cenário Aqui</h1>
-          <button class="btn btn-secondary btn-xl" onclick="parede()">Parede</button>
-          <button class="btn btn-secondary btn-xl" onclick="paredeComJanela()">Parede com Janela</button>
-          <button class="btn btn-secondary btn-xl" onclick="janela()">Janela</button>
-          <br><br>
+        <div style="text-align: center;">
           <h4 id="estado">Colocando Parede</h4>
+          <button class="btn btn-primary btn-xl" onclick="parede()">Parede</button>
+          <button class="btn btn-primary btn-xl" onclick="paredeComJanela()">Parede com Janela</button>
+          <button class="btn btn-primary btn-xl" onclick="janela()">Janela</button>
         </div>
         <br><br>
-        <div class="container">
+        <div >
           <div class="row">         
-            <div class="col-lg-4 home-about-left"">
-              <form action="" method="post" role="form">
-                <h4>Nome do Arquivo</h4>
-                <textarea name="titulo" rows="2" cols="20"></textarea>
-                <h4>Arquivo</h4>
+            <div class="col-lg-4" style="margin-left: 320px">
+                <div class="row">
+                  <div class="col-lg-2">
+                    <h4>Arquivo</h4>  
+                  </div>
+                  <div class="col-lg-2">
+                    <button class="btn btn-secondary" onclick="atualizarLog()">Atualizar</button>
+                  </div>
+                </div>
+                <form action="downAmbiente" method="post" role="form">
+                <br>
                 <textarea name="texto" rows="20" cols="20" id="log"></textarea>
                 <br>
-                <button class="btn btn-primary" type="submit" name="submit_button" value="Do Something">Download</button>
-                <button class="btn btn-secondary" onclick="atualizarLog()">Atualizar</button>
+                <div style="margin-left: 50px;">
+                  <button class="btn btn-primary" type="submit" name="submit_button" value="Do Something">Download</button>
+                </div>
               </form>
             </div>
-          <div class="col-lg-2 home-about-right">
+          <div class="col-lg-2 home-about-right" style="margin-left: -320px">
         <div id="hereCanvas" onmousedown="coord(event)"></div>
       </div>
     </div>
+  </div>
+  <div id="linhas">
+    
   </div>
 </section>
 
@@ -143,6 +171,13 @@ var informacao = '';
 t = prompt("Tamanho do ambiente (Ex: 12.8x7.2) em m");
 
 createCanvas(parseFloat(t.split("x")[0]) * 100, parseFloat(t.split("x")[1]) * 100);
+var texto = '<br>';
+for (var i = 0; i < parseFloat(t.split("x")[1]); i++) {
+  texto += '<br><br><br>';  
+}
+
+var element = document.getElementById('linhas');
+element.innerHTML = texto;
 
 var canvas = document.getElementById('CursorLayer');
 var tamanho = 3;
