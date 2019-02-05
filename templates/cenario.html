@@ -31,10 +31,13 @@
         <br><br>
         <div >
           <div class="row">         
-            <div class="col-lg-4" style="margin-left: 320px">
+            <div class="col-lg-4" style="margin-left: 300px">
+              <div>
+                <h4 style="margin-left: 50px">Arquivo</h4>
+              </div>
                 <div class="row">
                   <div class="col-lg-2">
-                    <h4>Arquivo</h4>  
+                      <button class="btn btn-secondary" onclick="ola()">Visualizar</button>
                   </div>
                   <div class="col-lg-2">
                     <button class="btn btn-secondary" onclick="atualizarLog()">Atualizar</button>
@@ -49,7 +52,7 @@
                 </div>
               </form>
             </div>
-          <div class="col-lg-2 home-about-right" style="margin-left: -320px">
+          <div class="col-lg-2 home-about-right" style="margin-left: -340px">
         <div id="hereCanvas" onmousedown="coord(event)"></div>
       </div>
     </div>
@@ -186,6 +189,38 @@ var stilo = 3;
 
 if (canvas.getContext) {
   var ctx = canvas.getContext('2d');
+}
+
+function ola(){
+  var inf = document.getElementById('log').value;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  informacao = '';
+  var inicio = 0;
+  var fim = 0;
+  var theLine = '';
+
+  var quebras = 0;
+  for (var i = 0; i < inf.length; i++) {    
+    if (inf.charAt(i) == "\n") {
+      fim = i;
+      var line = inf.substring(inicio, fim);
+      informacao = informacao.concat(inf.substring(inicio, fim) + "\n");
+      colorsParede(parseInt(line.split(" ")[5]), 1);
+      drawLine(ctx, parseFloat(line.split(" ")[1]), parseFloat(line.split(" ")[2]), parseFloat(line.split(" ")[3]), parseFloat(line.split(" ")[4]), tamanho, cor);
+      inicio = i + 1;
+      quebras++;
+    }
+  }
+
+  var ta = document.querySelector("textarea");
+  var s = ta.value.substring(ta.selectionStart, ta.selectionEnd);
+  if(s.split(" ").length > 4){
+    drawLine(ctx, parseFloat(s.split(" ")[1]), parseFloat(s.split(" ")[2]), parseFloat(s.split(" ")[3]), parseFloat(s.split(" ")[4]), 5, 'green');
+  }else{
+    alert("Por favor, selecione uma linha válida");
+  }
 }
 
 function coord(e) {
