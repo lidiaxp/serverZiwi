@@ -361,9 +361,9 @@ def oti():
 		# -----------------------------------------------------------------------------------------------------------------------------
 		if tomada[0] == 'c':
 			if extAG == 'mk':
-				ba, by = otimizarTomada(txx, tyy, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, name, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx)
+				ba, by = otimizarTomada(txx, tyy, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, name, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx, xt, yt)
 			else:
-				ba, by = otimizarTomada(txx, tyy, limiar, na, cor, 0, 0, 0, 0, tit, extAG, name, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx)
+				ba, by = otimizarTomada(txx, tyy, limiar, na, cor, 0, 0, 0, 0, tit, extAG, name, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx, xt, yt)
 			bAP = "Melhor X: " + str(ba) + "\nMelhor Y:  " + str(by)
 		else:
 			# ---------------------------------------------------------------------------------------------------------------------------
@@ -1140,7 +1140,7 @@ def AG(n_routers, modelo, ny, nx, limiar, nGerações, xt, yt, dx, dy, Lf, n, ph
     
     return pop[0], bestIndFit, mediumFit
 
-def otimizarTomada(tx, ty, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, nameAG, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx):
+def otimizarTomada(tx, ty, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, nameAG, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx, xt, yt):
 	non = []
 	a = list(zip(tx, ty))
 	for subset in combinations(a, na):
