@@ -77,7 +77,7 @@ def indoor():
 				filename = secure_filename(file.filename) 
 				file.save(os.path.join(filename))
 				valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
-				n = calculan(distancia, valores, Lf)
+				n = calculan(valores, distancia, Lf)
 			elif ambiente[0] == 'C':
 				n = 1.8
 			elif ambiente[0:11] == 'Ambientes G':
@@ -310,7 +310,7 @@ def oti():
 				filename = secure_filename(file.filename) 
 				file.save(os.path.join(filename))
 				valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
-				n = calculan(distancia, valores, Lf)
+				n = calculan(valores, distancia, Lf)
 			elif ambiente[0] == 'C':
 				n = 1.8
 			elif ambiente[0:11] == 'Ambientes G':
@@ -562,7 +562,7 @@ def hello2():
 			Lf = 20 * np.log10(4 * np.pi * do /(f * (10**3)/(3*(10**8)))) + gt + gr
 			valores, campoeletrico, distancia = lerArquivo(filename, lat, longg)
 
-			n = calculan(distancia, valores, Lf)
+			n = calculan(valores, distancia, Lf)
 		except:
 			return render_template('indexError.html')		
 
