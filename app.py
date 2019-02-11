@@ -556,6 +556,14 @@ def hello2():
 			gt = float(request.form['gt'])
 			gr = float(request.form['gr'])
 			file = request.files['myfile']
+			ambiente = request.form['nameAmbiente6']
+			print(ambiente[0:8])
+			if ambiente[0:8] == 'Cidade G':
+				mod = 1
+			elif ambiente[0:8] == 'Cidade M':
+				mod = 2
+			elif ambiente[0:8] == 'Cidade P':
+				mod = 3
 			filename = secure_filename(file.filename) 
 			file.save(os.path.join(filename))
 
@@ -568,9 +576,9 @@ def hello2():
 
 		for i in range(len(distancia)):
 			d.append(distancia[i])
-			eccData.append(ECC(f, h, 1, distancia[i], 1))
-			costData.append(Cost231(f, h, 1, distancia[i], 2))
-			suiData.append(sui(f, h, 1, distancia[i], 1, distancia))
+			eccData.append(ECC(f, h, 1, distancia[i], mod))
+			costData.append(Cost231(f, h, 1, distancia[i], mod))
+			suiData.append(sui(f, h, 1, distancia[i], mod, distancia))
 			ciData.append(closein(Lf, n, distancia[i]*1000))
 			perda.append(ptdb - valores [i])
 
@@ -619,6 +627,7 @@ def calculanComGrafico(valores, distancia, LF, do):
 		soma += i
         
 	n = solve(soma)[0]
+	print(soma)
     
 	# A partir daki é só pra fazer esse gráfico
     
@@ -788,6 +797,7 @@ def calculan(valores, distancia, Lf):
         soma += i
         
     n = solve(soma)[0]
+    print(soma)
 
     return n
 
@@ -971,7 +981,7 @@ def sui(f, txh, rxh, d, mode, distancia):
         c = 17.1
         xhcf = -10.8
     
-    if mode == 3:
+    if mode == 3: # rural
         a = 3.6
         b = 0.005
         c = 20
