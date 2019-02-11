@@ -57,8 +57,21 @@
           <br><br>
           <form action="outdoor" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-              <label for="freq">Frequência (MHz)</label>
-              <input step="any" type="number" id="freq" name="freq" class="form-control" placeholder="Insira a frequência em MHz" value="1800">
+            	<div class="row">
+          			<div class="col-lg-6">
+          				<label for="freq">Frequência (MHz)</label>
+              			<input step="any" type="number" id="freq" name="freq" class="form-control" placeholder="Insira a frequência em MHz" value="1800">
+          			</div>
+          		<div class="col-lg-6">
+          			<label>Ambiente</label>
+                    <select class="form-control" id="nameAmbiente6" name="nameAmbiente6">
+                      <option>Cidade Grande</option>
+                      <option>Cidade Média</option>
+                      <option>Cidade Pequena</option>
+                    </select>
+          		</div>
+          	</div>
+              
             </div>
             <div class="form-group">
               <label>Altura da Antena Transmissora (m)</label>
