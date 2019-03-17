@@ -126,7 +126,7 @@
   <br><br>
 </section>
 
-<script type="text/javascript"> window.myVar1 = "{{dist1}}"; window.myVar2 = "{{itu}}"; window.myVar3 = "{{ci}}"; window.myVar4 = "{{mk}}"; window.myVar5 = "{{infoCom}}";window.lnn = "{{Lnn}}";window.ln1 = "{{Ln1}}";window.ln2 = "{{Ln2}}";window.ln3 = "{{Ln3}}";window.ln4 = "{{Ln4}}";window.ln5 = "{{Ln5}}";window.dns = "{{dns}}";window.myVar6 = "{{o}}";</script>
+<script type="text/javascript"> window.myVar1 = "{{dist1}}"; window.myVar2 = "{{itu}}"; window.myVar3 = "{{ci}}"; window.myVar4 = "{{mk}}"; window.myVar5 = "{{infoCom}}";window.lnn = "{{Lnn}}";window.ln1 = "{{Ln1}}";window.ln2 = "{{Ln2}}";window.ln3 = "{{Ln3}}";window.ln4 = "{{Ln4}}";window.ln5 = "{{Ln5}}";window.dns = "{{dns}}";window.myVar6 = "{{o}}";window.myVar7 = "{{fi}}";</script>
 
 <script type="text/javascript">
 
@@ -134,7 +134,7 @@ myVar1 = myVar1.substring(1, myVar1.length - 1);
 myVar2 = myVar2.substring(1, myVar2.length - 1);
 myVar3 = myVar3.substring(1, myVar3.length - 1);
 myVar4 = myVar4.substring(1, myVar4.length - 1);
-//myVar5 = myVar5.substring(1, myVar5.length - 1);
+myVar7 = myVar7.substring(1, myVar7.length - 1);
 myVar6 = myVar6.substring(1, myVar6.length - 1);
 
 d  = [];
@@ -143,7 +143,7 @@ ci = [];
 mk = [];
 itu = [];
 val = [];
-
+fi = [];
 
 var oill = myVar1.split(", ");
 for(var i=0; i < oill.length; i++) {
@@ -176,7 +176,10 @@ for(var i=0; i < oill.length; i++) {
     val.push(oill[i]);
 }
 
-
+var oill = myVar7.split(" ");
+for(var i=0; i < oill.length; i++) {
+    fi.push(oill[i]);
+}
 
 document.getElementById("n11").innerText = val[0];
 document.getElementById("n21").innerText = val[0];
@@ -185,8 +188,7 @@ document.getElementById("n41").innerText = val[0];
 document.getElementById("rmse11").innerText = val[2];
 document.getElementById("rmse21").innerText = val[3];
 document.getElementById("rmse31").innerText = val[1];
-
-
+document.getElementById("rmse41").innerText = val[4];
 
 var trace1 = {
   x: d,
@@ -216,7 +218,14 @@ var trace4 = {
   mode: 'markers'
 };
 
-var data = [trace1, trace2, trace3, trace4];
+var trace5 = {
+  x: d,
+  y: fi,
+  name:'Floating Intercept',
+  mode: 'markers'
+};
+
+var data = [trace1, trace2, trace3, trace4, trace5];
 
 var layout = {};
 
