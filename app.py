@@ -24,6 +24,7 @@ global eccData
 global costData
 global suiData
 global ciData
+global fiData
 global perda
 global d
 global ext
@@ -72,39 +73,48 @@ def indoor():
 			bmhz = float(request.form['bmhz'])
 			noise = float(request.form['noise'])
 			ambiente = request.form['nameAmbiente']
-			if ambiente[0] == '-':
-				file = request.files['myfileIN']
-				filename = secure_filename(file.filename) 
-				file.save(os.path.join(filename))
-				valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
-				n = calculan(valores, distancia, Lf)
-			elif ambiente[0] == 'C':
-				n = 1.8
-			elif ambiente[0:11] == 'Ambientes G':
-				n = 2
-			elif ambiente[0:11] == 'Ambientes M':
-				n = 3
-			elif ambiente[0:11] == 'Ambientes D':
-				n = 4
-			modelo = request.form['nameModels']
-			if modelo[0] == 'M':
-				file1 = request.files['paredes']
-				filename1 = secure_filename(file1.filename) 
-				file1.save(os.path.join(filename1))
-				modelh, modelv, ph, pv = lerTexto(filename1)
+
+			constb = 1.3806503e-23
+			nx = 80
+			ny = 40
+			Lf = 20 * np.log10(4 * np.pi * do /(f * (10**3)/(3*(10**8)))) + gt + gr
+			nap = len(x0)
+			cor = 'red'
+			dx = np.linspace(0, xt, nx)
+			dy = np.linspace(0, yt, ny)
+			px = len(dx)
+			py = len(dy)
+		
 		except:
 			return render_template('indexError.html')
-
-		constb = 1.3806503e-23
-		nx = 80
-		ny = 40
-		Lf = 20 * np.log10(4 * np.pi * do /(f * (10**3)/(3*(10**8)))) + gt + gr
-		nap = len(x0)
-		cor = 'red'
-		dx = np.linspace(0, xt, nx)
-		dy = np.linspace(0, yt, ny)
-		px = len(dx)
-		py = len(dy)
+	
+		if ambiente[0] == '-':
+			file = request.files['myfileIN']
+			filename = secure_filename(file.filename) 
+			file.save(os.path.join(filename))
+			valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
+			n = calculan(valores, distancia, Lf)
+		elif ambiente[0] == 'C':
+			n = 1.8
+		elif ambiente[0:11] == 'Ambientes G':
+			n = 2
+		elif ambiente[0:11] == 'Ambientes M':
+			n = 3
+		elif ambiente[0:11] == 'Ambientes D':
+			n = 4
+			
+		modelo = request.form['nameModels']
+			
+		if modelo[0] == 'M':
+			file1 = request.files['paredes']
+			filename1 = secure_filename(file1.filename) 
+			file1.save(os.path.join(filename1))
+			modelh, modelv, ph, pv = lerTexto(filename1)
+		if modelo[0] == 'F':
+			file = request.files['myfileIN']
+			filename = secure_filename(file.filename) 
+			file.save(os.path.join(filename))
+			valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
 
 		if modelo[0] == 'M':
 			ext = 'mk'
@@ -128,9 +138,11 @@ def indoor():
 		fig, ax = plt.subplots() 
 		if modelo[0] == 'M':
 			ax = plotarParedes(ax, ph, pv, modelh, modelv)
-			perda_f, non_cob = cobertura(x0, y0, ext, ny, nx, nap, 0, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px)
+			perda_f, non_cob = cobertura(x0, y0, ext, ny, nx, nap, 0, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, 0, 0)
+		elif modelo[0] == 'F':
+			perda_f, non_cob = cobertura(x0, y0, ext, ny, nx, nap, 0, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, valores, distancia)
 		else:
-			perda_f, non_cob = cobertura(x0, y0, ext, ny, nx, nap, 0, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px)
+			perda_f, non_cob = cobertura(x0, y0, ext, ny, nx, nap, 0, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, 0, 0)
 		ax.plot(x0, y0, 'o', color=cor)
 		plt.title("Perda pelo Modelo " + tit)
 		plt.imshow(perda_f,cmap='jet',extent=[0,xt,0,yt],origin='lower')
@@ -244,12 +256,12 @@ def comparision():
 			Lf = 20 * np.log10(4 * np.pi * do /(f * (10**3)/(3*(10**8)))) + gt + gr
 			valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0, y0)
 			pathN, n, Ln5, Ln4, Ln3, Ln2, Ln1, Lnn, dns = calculanComGrafico(valores, distancia, Lf, do)
-			pathComparar, itu, ci, mk, o = comparar(distancia, do, f, Lf, n, ptdb, valores)
-			info = str(n) + " " + str(rmse(o, itu)) + " " + str(rmse(o, ci)) + " " +  str(rmse(o, mk))
+			pathComparar, itu, ci, mk, o, fi = comparar(distancia, do, f, Lf, n, ptdb, valores)
+			info = str(n) + " " + str(rmse(o, itu)) + " " + str(rmse(o, ci)) + " " +  str(rmse(o, mk)) + " " +  str(rmse(o, fi))
 		except:
 			return render_template('indexError.html')
 	
-	return render_template('fifth.html', algo=algo, itu=itu, medido=o, ci=ci, mk=mk, infoCom=info, dist1=distancia, n1=n, Ln5=Ln5, Ln4=Ln4, Ln3=Ln3, Ln2=Ln2, Ln1=Ln1, Lnn=Lnn, dns=dns)
+	return render_template('fifth.html', algo=algo, itu=itu, medido=o, ci=ci, fi=fi, mk=mk, infoCom=info, dist1=distancia, n1=n, Ln5=Ln5, Ln4=Ln4, Ln3=Ln3, Ln2=Ln2, Ln1=Ln1, Lnn=Lnn, dns=dns)
 
 @app.route("/compararDown", methods=['GET', 'POST'])
 def comparisionDown():
@@ -361,16 +373,20 @@ def oti():
 		# -----------------------------------------------------------------------------------------------------------------------------
 		if tomada[0] == 'c':
 			if extAG == 'mk':
-				ba, by = otimizarTomada(txx, tyy, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, name, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx, xt, yt)
+				ba, by = otimizarTomada(txx, tyy, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, name, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx, xt, yt, 0, 0)
+			elif extAG == 'fi':
+				ba, by = otimizarTomada(txx, tyy, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, name, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx, xt, yt, valores, distancia)
 			else:
-				ba, by = otimizarTomada(txx, tyy, limiar, na, cor, 0, 0, 0, 0, tit, extAG, name, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx, xt, yt)
+				ba, by = otimizarTomada(txx, tyy, limiar, na, cor, 0, 0, 0, 0, tit, extAG, name, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx, xt, yt, 0, 0)
 			bAP = "Melhor X: " + str(ba) + "\nMelhor Y:  " + str(by)
 		else:
 			# ---------------------------------------------------------------------------------------------------------------------------
 			if extAG == 'mk':
-				bestP, bestIndFit, mediumFit = AG(nap, extAG, ny, nx, limiar, interacoes, xt, yt, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px)
+				bestP, bestIndFit, mediumFit = AG(nap, extAG, ny, nx, limiar, interacoes, xt, yt, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, 0, 0)
+			elif extAG == 'fi':
+				bestP, bestIndFit, mediumFit = AG(nap, extAG, ny, nx, limiar, interacoes, xt, yt, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, valores, distancia)
 			else:
-				bestP, bestIndFit, mediumFit = AG(nap, extAG, ny, nx, limiar, interacoes, xt, yt, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px)
+				bestP, bestIndFit, mediumFit = AG(nap, extAG, ny, nx, limiar, interacoes, xt, yt, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, 0, 0)
 
 			fig, ax = plt.subplots()
 			plt.plot(bestIndFit, label='Fitness do Melhor Indivíduo')
@@ -395,9 +411,11 @@ def oti():
 
 			if modelo[0] == 'M':
 				ax = plotarParedes(ax, ph, pv, modelh, modelv) 
-				perda_f = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px)[0] 
+				perda_f = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, 0, 0)[0]
+			elif modelo[0] == 'F':
+				perda_f = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, valores, distancia)[0] 
 			else:
-				perda_f = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px)[0]  
+				perda_f = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, 0, 0)[0]  
 			ax.plot(bestX, bestY, 'o', color=cor)
 			plt.title("Melhor Perda pelo Modelo Motley Keenan\nMelhor X: " + str(bestX) + "\nMelhor Y: " + str(bestY))
 			plt.imshow(perda_f,cmap='jet',extent=[0,xt,0,yt],origin='lower')
@@ -537,12 +555,14 @@ def hello2():
 		global costData
 		global suiData
 		global ciData
+		global fiData
 		global perda
 		global d
 		eccData = []
 		costData = []
 		suiData = []
 		ciData = []
+		fiData = []
 		perda = []
 		d = []
 
@@ -557,7 +577,7 @@ def hello2():
 			gr = float(request.form['gr'])
 			file = request.files['myfile']
 			ambiente = request.form['nameAmbiente6']
-			print(ambiente[0:8])
+		
 			if ambiente[0:8] == 'Cidade G':
 				mod = 1
 			elif ambiente[0:8] == 'Cidade M':
@@ -574,17 +594,30 @@ def hello2():
 		except:
 			return render_template('indexError.html')		
 
+		B = valores # potencia recebida
+		pontos = distancia # distancia
+		D = 10 * np.log10(np.asarray(pontos))
+		Num = len(D)
+        
+		divisor = ((sum(D))**2) - (Num * sum(D**2))
+        
+		alfaC = (sum(D) * sum(D * np.mean(B))) - (sum(D**2) * sum(B)) 
+		betaC = (sum(D) * sum(B)) - (Num * sum (D * np.mean(B))) 
+		alfa = alfaC / divisor
+		beta = betaC / divisor
+
 		for i in range(len(distancia)):
 			d.append(distancia[i])
+			fiData.append(alfa + 10 * beta * np.log10(distancia[i]))
 			eccData.append(ECC(f, h, 1, distancia[i], mod))
 			costData.append(Cost231(f, h, 1, distancia[i], mod))
 			suiData.append(sui(f, h, 1, distancia[i], mod, distancia))
 			ciData.append(closein(Lf, n, distancia[i]*1000))
 			perda.append(ptdb - valores [i])
 
-		info = str(n) + " " + str(rmse(perda, suiData)) + " " + str(rmse(perda, eccData)) + " " +  str(rmse(perda, costData)) + " " + str(rmse(perda, ciData))
+		info = str(n) + " " + str(rmse(perda, suiData)) + " " + str(rmse(perda, eccData)) + " " +  str(rmse(perda, costData)) + " " + str(rmse(perda, ciData)) + " " + str(rmse(perda, ciData))
 
-	return render_template('fourth.html', dist=d, val=perda, ecc=eccData, cost=costData, sui=suiData, ci=ciData, info=info)
+	return render_template('fourth.html', dist=d, val=perda, ecc=eccData, cost=costData, sui=suiData, ci=ciData, fi=fiData, info=info)
 
 @app.route("/down", methods=['GET', 'POST'])
 def download():
@@ -598,6 +631,7 @@ def download():
 			plt.plot(d, eccData, ".r", label = "ECC33")
 			plt.plot(d, costData, ".g", label = "Cost231")
 			plt.plot(d, ciData, ".c", label = "Close IN")
+			plt.plot(d, fiData, "xr", label = "Floating Intercpt")
 			plt.legend()
 			path = 'static/img/outdoor/outdoor.png'
 			plt.savefig(path)
@@ -703,13 +737,25 @@ def plotarParedes(ax, ph, pv, modelh, modelv):
 
 def comparar(distancia, do, f, Lf, n, ptdb, valores):
 	itu = []
-	#fi = []
+	fi = []
 	mk = []
 	ci = []
 
+	B = valores # potencia recebida
+	pontos = distancia # distancia
+	D = 10 * np.log10(np.asarray(pontos))
+	Num = len(D)
+        
+	divisor = ((sum(D))**2) - (Num * sum(D**2))
+        
+	alfaC = (sum(D) * sum(D * np.mean(B))) - (sum(D**2) * sum(B)) 
+	betaC = (sum(D) * sum(B)) - (Num * sum (D * np.mean(B))) 
+	alfa = alfaC / divisor
+	beta = betaC / divisor
+
 	for i in range(len(distancia)):
 		itu.append(20 * np.log10(f) + n * 10 * np.log10(distancia[i]) - 28) #itu
-		#fi.append(Lf + 10 * n * np.log10(distancia[i])) 
+		fi.append(alfa + 10 * beta * np.log10(distancia[i])) 
 		mk.append(Lf + 10 * n * np.log10(distancia[i]/do)) #MK
 		ci.append(Lf + 10 * n * np.log10(distancia[i])) #ci
         # Floating Interception FI
@@ -728,7 +774,7 @@ def comparar(distancia, do, f, Lf, n, ptdb, valores):
 
 
 	plt.plot(dis, itu, '*b', label='ITU')
-	#plt.plot(dis, fi, '*k', label='Floating Interception')
+	plt.plot(dis, fi, '*k', label='Floating Interception')
 	plt.plot(dis, ci, '*y', label='Close In')
 	plt.plot(dis, mk, '*c', label='Motley Keenan')
 	plt.plot(dis, o, 'or', label='Dados Medidos')
@@ -737,7 +783,7 @@ def comparar(distancia, do, f, Lf, n, ptdb, valores):
 
 	path = 'static/img/indoor/comparacao.png'
 	plt.savefig(path)
-	return path, itu, ci, mk, o
+	return path, itu, ci, mk, o, fi
 
 def rmse(medido, predito):
 	if len(medido) != len(predito):
@@ -851,7 +897,7 @@ def Cost231(f, txh, rxh, d, mode):
     
 	return dbloss
 
-def cobertura(x, y, modelo, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px):
+def cobertura(x, y, modelo, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia):
     perda = []
     perdas = []
     perda_f = []
@@ -861,11 +907,17 @@ def cobertura(x, y, modelo, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, 
         perda_f.append([])
         
     if modelo == 'fi':
-        di = []
-        for k in range(nap):
-            for i in range(ny):
-                for j in range(nx): 
-                    di.append(np.sqrt(np.power(dx[j] - x[k], 2) + np.power(dy[i] - y[k], 2)))
+        B = valores # potencia recebida
+        pontos = distancia # distancia
+        D = 10 * np.log10(np.asarray(pontos))
+        Num = len(D)
+        
+        divisor = ((sum(D))**2) - (Num * sum(D**2))
+        
+        alfaC = (sum(D) * sum(D * np.mean(B))) - (sum(D**2) * sum(B)) 
+        betaC = (sum(D) * sum(B)) - (Num * sum (D * np.mean(B))) 
+        alfa = alfaC / divisor
+        beta = betaC / divisor
     
     for k in range(nap):
         perda = np.zeros((ny,nx));
@@ -874,10 +926,6 @@ def cobertura(x, y, modelo, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, 
                 d = np.sqrt(np.power(dx[j] - x[k], 2) + np.power(dy[i] - y[k], 2))
                 
                 if modelo == 'fi':
-                    B = 5
-                    D = 10 * np.log10(np.asarray(di))
-                    beta = np.transpose(np.asarray(D) - np.mean(D)) * ((np.transpose(np.asarray(D) - np.mean(D))) * (inv(np.asarray(D) - np.mean(D)))) * (np.asarray(B) - np.mean(B))
-                    alfa = np.mean(B) - beta * np.mean(D)
                     oi = alfa + 10 * beta * np.log10(d)
                     
                 if modelo == 'itu':
@@ -1021,7 +1069,7 @@ def lerTexto(arquivo):
     
     return modelh, modelv, ph, pv
 
-def startPop(size, n_routers, modelo, ny, nx, limiar, xt, yt, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px):
+def startPop(size, n_routers, modelo, ny, nx, limiar, xt, yt, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia):
     pop = []
     for i in range(size):
         oi = []
@@ -1031,12 +1079,12 @@ def startPop(size, n_routers, modelo, ny, nx, limiar, xt, yt, dx, dy, Lf, n, ph,
         pop.append(oi)
 
     for i in pop:
-        i.append(fitness(i, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px))
+        i.append(fitness(i, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia))
 
     pop.sort(key=lambda x: x[n_routers * 2], reverse=False)
     return pop
 
-def fitness(vec, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px):
+def fitness(vec, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia):
     x = []
     y = []
     
@@ -1044,7 +1092,7 @@ def fitness(vec, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, model
         x.append(vec[i * 2])
         y.append(vec[(i * 2) + 1])
         
-    non_cob = cobertura(x, y, modelo, ny, nx, n_routers, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px)[1]
+    non_cob = cobertura(x, y, modelo, ny, nx, n_routers, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia)[1]
 
     if (non_cob <= 85):
         return non_cob
@@ -1071,7 +1119,7 @@ def torneio(pop, tx, nCandidatos, n_routers):
                 bestFitness = j[n_routers * 2]
     return popPais
 
-def cruzamento(popPais, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px):
+def cruzamento(popPais, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia):
     popFilhos = []
     
     for i,k in zip(popPais[0::2], popPais[1::2]):
@@ -1088,8 +1136,8 @@ def cruzamento(popPais, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv
                 filho1.append(k[j])
                 filho2.append(i[j])
         
-        filho1.append(fitness(filho1, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px))
-        filho2.append(fitness(filho2, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px))
+        filho1.append(fitness(filho1, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia))
+        filho2.append(fitness(filho2, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia))
         popFilhos.append(filho1)
         popFilhos.append(filho2)
     return popFilhos
@@ -1103,7 +1151,7 @@ def inserirFilhos(pop, popFilhos, n_routers):
     pop.sort(key=lambda x: x[n_routers * 2], reverse=False)
     return pop
 
-def mutacao(pop, tx, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, xt, yt):
+def mutacao(pop, tx, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, xt, yt, valores, distancia):
     nMutados = int(len(pop) * tx)
     elitismo = True
 
@@ -1120,15 +1168,15 @@ def mutacao(pop, tx, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, m
         else:
             pop[index1][index2] = (round(random.uniform(0, yt), 2))
         
-        pop[index1][n_routers * 2] = fitness(pop[index1], n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px)
+        pop[index1][n_routers * 2] = fitness(pop[index1], n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia)
     pop.sort(key=lambda x: x[n_routers * 2], reverse=False)
     return pop
 
-def AG(n_routers, modelo, ny, nx, limiar, nGerações, xt, yt, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px):
+def AG(n_routers, modelo, ny, nx, limiar, nGerações, xt, yt, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia):
     bestIndFit = []
     mediumFit = []
 
-    pop = startPop(100, n_routers, modelo, ny, nx, limiar, xt, yt, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px)
+    pop = startPop(100, n_routers, modelo, ny, nx, limiar, xt, yt, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia)
 
     taxaDeCruzamento = 0.5
     taxaDeMutacao = 0.1
@@ -1137,11 +1185,11 @@ def AG(n_routers, modelo, ny, nx, limiar, nGerações, xt, yt, dx, dy, Lf, n, ph
 
         popPais = torneio(pop, taxaDeCruzamento, 3, n_routers)
         
-        popFilhos = cruzamento(popPais, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px)
+        popFilhos = cruzamento(popPais, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia)
         
         pop = inserirFilhos(pop, popFilhos, n_routers)
 
-        pop = mutacao(pop, taxaDeMutacao, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, xt, yt)
+        pop = mutacao(pop, taxaDeMutacao, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, xt, yt, valores, distancia)
 
         print(f'Geração {i} -- Melhor Indivíduo: {pop[0]} -- non_cob: {pop[0][n_routers * 2]}')
 
@@ -1150,7 +1198,7 @@ def AG(n_routers, modelo, ny, nx, limiar, nGerações, xt, yt, dx, dy, Lf, n, ph
     
     return pop[0], bestIndFit, mediumFit
 
-def otimizarTomada(tx, ty, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, nameAG, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx, xt, yt):
+def otimizarTomada(tx, ty, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, nameAG, dx, dy, Lf, n, f, ptdb, gt, gr, py, px, ny, nx, xt, yt, valores, distancia):
 	non = []
 	a = list(zip(tx, ty))
 	for subset in combinations(a, na):
@@ -1159,14 +1207,14 @@ def otimizarTomada(tx, ty, limiar, na, cor, ph, pv, modelh, modelv, tit, extAG, 
 		for i in range(na):
 			tentX.append(subset[i][0])
 			tentY.append(subset[i][1])
-		perda_fi, non_cob = cobertura(tentX, tentY, extAG, ny, nx, len(tentX), limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px)
+		perda_fi, non_cob = cobertura(tentX, tentY, extAG, ny, nx, len(tentX), limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia)
 		non.append([tentX, tentY, non_cob])
     
 	fig, ax = plt.subplots() 
 	ax.plot(non[0][0], non[0][1], 'o', color=cor)
 	if extAG == 'mk':
 		ax = plotarParedes(ax, ph, pv, modelh, modelv)
-	perda_fi, non_cob = cobertura(non[0][0], non[0][1], extAG, ny, nx, len(tentX), limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px)
+	perda_fi, non_cob = cobertura(non[0][0], non[0][1], extAG, ny, nx, len(tentX), limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia)
 	plt.title("Perda pelo Modelo " + tit + "\nEixo X: " + str(non[0][0]) + "\nEixo Y: " + str(non[0][1]))
 	plt.imshow(perda_fi,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 	plt.colorbar(label="dB")
@@ -1194,6 +1242,7 @@ def coberturaUnity():
 	bmhz = float(request.form['bmhz'])
 	noise = float(request.form['noise'])
 	n = float(request.form['n'])
+	paredess = request.form['paredes']
 	
 	constb = 1.3806503e-23
 	nx = 80
@@ -1210,7 +1259,7 @@ def coberturaUnity():
 	perda_f = []
 	
 	if modelo == 'mk':
-		frase = "h 0 6 4 4 1\nh 0 6 5 5 2\nv 1.5 1.5 0 4 3"
+		frase = paredess
 		ph = []
 		pv = []
 		modelh = []
@@ -1232,25 +1281,11 @@ def coberturaUnity():
 		perda.append([])
 		perda_f.append([])
         
-	if modelo == 'fi':
-		di = []
-		for k in range(nap):
-			for i in range(ny):
-				for j in range(nx): 
-					di.append(np.sqrt(np.power(dx[j] - x0[k], 2) + np.power(dy[i] - y0[k], 2)))
-    
 	for k in range(nap):
 		perda = np.zeros((ny,nx));
 		for i in range(ny):
 			for j in range(nx): 
 				d = np.sqrt(np.power(dx[j] - x0[k], 2) + np.power(dy[i] - y0[k], 2))
-               
-				if modelo == 'fi':
-					B = 5
-					D = 10 * np.log10(np.asarray(di))
-					beta = np.transpose(np.asarray(D) - np.mean(D)) * ((np.transpose(np.asarray(D) - np.mean(D))) * (inv(np.asarray(D) - np.mean(D)))) * (np.asarray(B) - np.mean(B))
-					alfa = np.mean(B) - beta * np.mean(D)
-					oi = alfa + 10 * beta * np.log10(d)
                     
 				if modelo == 'itu':
 					oi = 20 * np.log10(f) + n * 10 * np.log10(d) - 28
