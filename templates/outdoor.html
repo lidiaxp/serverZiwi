@@ -132,7 +132,7 @@
   
 </section>
 
-<script type="text/javascript"> window.myVar1 = "{{dist}}"; window.myVar2 = "{{val}}"; window.myVar3 = "{{ecc}}"; window.myVar4 = "{{cost}}"; window.myVar5 = "{{sui}}"; window.myVar6 = "{{ci}}"; window.myVar7 = "{{info}}"</script>
+<script type="text/javascript"> window.myVar1 = "{{dist}}"; window.myVar2 = "{{val}}"; window.myVar3 = "{{ecc}}"; window.myVar4 = "{{cost}}"; window.myVar5 = "{{sui}}"; window.myVar6 = "{{ci}}"; window.myVar7 = "{{info}}"; window.myVar8 = "{{fi}}"</script>
 
 <script type="text/javascript">
 
@@ -142,6 +142,7 @@ myVar3 = myVar3.substring(1, myVar3.length - 1);
 myVar4 = myVar4.substring(1, myVar4.length - 1);
 myVar5 = myVar5.substring(1, myVar5.length - 1);
 myVar6 = myVar6.substring(1, myVar6.length - 1);
+myVar8 = myVar6.substring(1, myVar8.length - 1);
 
 d  = [];
 v = [];
@@ -149,6 +150,7 @@ ecc = [];
 cost = [];
 sui = [];
 ci = [];
+fi = [];
 val = [];
 
 var oill = myVar1.split(", ");
@@ -186,14 +188,21 @@ for(var i=0; i < oill.length; i++) {
     val.push(oill[i]);
 }
 
+var oill = myVar8.split(" ");
+for(var i=0; i < oill.length; i++) {
+    fi.push(oill[i]);
+}
+
 document.getElementById("n1").innerText = val[0];
 document.getElementById("n2").innerText = val[0];
 document.getElementById("n3").innerText = val[0];
 document.getElementById("n4").innerText = val[0];
+document.getElementById("n5").innerText = val[0];
 document.getElementById("rmse1").innerText = val[1];
 document.getElementById("rmse2").innerText = val[3];
 document.getElementById("rmse3").innerText = val[2];
 document.getElementById("rmse4").innerText = val[4];
+document.getElementById("rmse5").innerText = val[5];
 
 var trace1 = {
   x: d,
@@ -230,8 +239,14 @@ var trace5 = {
   mode: 'markers'
 };
 
+var trace6 = {
+  x: d,
+  y: fi,
+  name:'Floating Intercept',
+  mode: 'markers'
+};
 
-var data = [trace1, trace2, trace3, trace4, trace5];
+var data = [trace1, trace2, trace3, trace4, trace5, trace6];
 
 var layout = {};
 
