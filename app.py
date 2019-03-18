@@ -277,6 +277,22 @@ def comparisionDown():
 	return render_template('fifth.html', algo=algo, itu=itu, medido=o, ci=ci, mk=mk, infoCom=info)
 
 # -----------------------------------------------------------------------------------------------------------------------------------
+@app.route("/downSite", methods=['GET', 'POST'])
+def downSite():
+	path = 'static/pdf/WebZiwiInstrucoes.pdf'
+	return send_file(path, as_attachment=True)
+
+@app.route("/downApp", methods=['GET', 'POST'])
+def downApp():
+	path = 'static/pdf/AplicativoZiwiInstrucoes.pdf'
+	return send_file(path, as_attachment=True)
+
+@app.route("/downVR", methods=['GET', 'POST'])
+def downVR():
+	path = 'static/pdf/VRZiwiInstrucoes.pdf'
+	return send_file(path, as_attachment=True)
+
+# -----------------------------------------------------------------------------------------------------------------------------------
 @app.route("/indoorAG", methods=['GET', 'POST'])
 def oti():
 	maisalgo = '#rAG'
