@@ -4,75 +4,69 @@
 			<form action="indoor" method="POST" enctype="multipart/form-data">
             	<div class="row">
                 	<div class="col-lg-6">
-                  		<label>Largura Máxima da Sala (m)</label>
+                  		<label><strong>Largura Máxima da Sala (m)</strong></label>
                   		<input step="any" type="number" id="xt" name="xt" class="form-control">
                 	</div>
                 	<div class="col-lg-6">
-                  		<label>Comprimento Máximo da Sala (m)</label>
+                  		<label><strong>Comprimento Máximo da Sala (m)</strong></label>
                   		<input step="any" type="number" id="yt" name="yt" class="form-control">
                 	</div>
               	</div>
+              	<br>
             	<div class="row">
                 	<div class="col-lg-6">
-                  		<label>Eixo X dos Roteadores (m)</label>
+                  		<label><strong>Eixo X dos Roteadores (m)</strong></label>
                   		<input type="text" id="x0" name="x0" class="form-control" placeholder="Ex: 5.5,8,7.3">
                   		<small style="color: red">Adicione os roteadores depois de vírgulas e não coloque espaço</small>
                 	</div>
                 	<div class="col-lg-6">
-                  		<label>Eixo Y dos Roteadores (m)</label>
+                  		<label><strong>Eixo Y dos Roteadores (m)</strong></label>
                   		<input type="text" id="y0" name="y0" class="form-control" placeholder="Ex: 5.5,8,7.3">
                   		<small style="color: red">Adicione os roteadores depois de vírgulas e não coloque espaço</small>
                 	</div>
               	</div>
+              	<br>
               	<div class="row">
                 	<div class="col-lg-6">
-                  		<label>Potência Recebida no Ponto d0 (dBm)</label>
+                  		<label><strong>Potência Recebida no Ponto d0 (m)</strong></label>
                   		<input step="any" type="ptd0" id="ptd0" name="ptd0" class="form-control">
                 	</div>
                 	<div class="col-lg-6">
-                  		<label>Distância Mínima (m)</label>
+                  		<label><strong>Distância Mínima (m)</strong></label>
                   		<input step="any" type="number" id="d0" name="d0" class="form-control" value="1">
                 	</div>
               	</div>
+              	<br>
               	<div class="row">
                 	<div class="col-lg-6">
-                  		<label>Potência de Transmissão (dBm)</label>
+                  		<label><strong>Potência de Transmissão (dBm)</strong></label>
                   		<input step="any" type="number" id="ptdb" name="ptdb" class="form-control" value="-15">
                 	</div>
                 	<div class="col-lg-6">
-                  		<label>Frequência (MHz)</label>
+                  		<label><strong>Frequência (MHz)</strong></label>
                   		<input step="any" type="number" id="fq" name="fq" class="form-control" value="2400">
                 	</div>
               	</div>
+              	<br>
               	<div class="row">
-                	<div class="col-lg-6">
-                  		<label>Ganho da Antena Transmissora (dB)</label>
+                	<div class="col-lg-4">
+                  		<label><strong>Ganho da Antena Transmissora (dB)</strong></label>
                   		<input step="any" type="number" id="gt" name="gt" class="form-control" value="1">
                 	</div>
-                	<div class="col-lg-6">
-                  		<label>Ganho da Antena Receptora (dB)</label>
+                	<div class="col-lg-4">
+                  		<label><strong>Ganho da Antena Receptora (dB)</strong></label>
                   		<input step="any" type="number" id="gr" name="gr" class="form-control" value="1">
                 	</div>
-              	</div>
-              	<div class="row">
                 	<div class="col-lg-4">
-                  		<label>Temperatura (K)</label>
-                  		<input step="any" type="number" id="k" name="k" class="form-control" placeholder="A temperatura deve ser em Kelvin" value="300">
-                  		<small>A temperatura ambiente em Kelvin é 300</small>
-                	</div>
-                	<div class="col-lg-4">
-                  		<label>Largura de Banda (MHz)</label>
+                  		<label><strong>Largura de Banda (MHz)</strong></label>
                   		<input step="any" type="number" id="bmhz" name="bmhz" class="form-control" value="20">
                 	</div>
-                	<div class="col-lg-4">
-                  		<label>Fator de Ruído</label>
-                  		<input step="any" type="number" id="noise" name="noise" class="form-control" placeholder="noisefactor" value="0">
-                	</div>
               	</div>
+              	
               	<br><br>
               	<div class="row">
                   <div class="col-lg-3">
-                    <label>Ambiente</label>
+                    <label><strong>Ambiente</strong></label>
                     <select class="form-control" id="nameAmbiente" name="nameAmbiente">
                       <option>----------</option>
                       <option>Corredor</option>
@@ -83,20 +77,20 @@
                   </div>
               		<div class="col-lg-3">
               			<div class="form-group">
-             				  <label>Arquivo com as Medições (.txt)</label>
+             				  <label><strong>Arquivo com as Medições (.txt)</strong></label>
               				<input type="file" class="form-control-file" name="myfileIN">
                       <small>(Opcional, caso defina o ambiente)</small>
             			  </div>
               		</div>
                   <div class="col-lg-3">
                     <div class="form-group">
-                      <label>Inserir o Arquivo com as Paredes (.txt)</label>
+                      <label><strong>Inserir o Arquivo com as Paredes (.txt)</strong></label>
                       <input type="file" class="form-control-file" name="paredes">
                       <small>(Opcional, exceto para o Motley Keenan)</small>
                     </div>
                   </div>
               		<div class="col-lg-3">
-                  	<label>Modelo</label>
+                  	<label><strong>Modelo</strong></label>
                   	<select class="form-control" id="nameModels" name="nameModels">
       						    <option>Motley Keenan</option>
       						    <option>Close IN</option>
