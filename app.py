@@ -69,9 +69,9 @@ def indoor():
 			f = float(request.form['fq'])
 			gt = float(request.form['gt'])
 			gr = float(request.form['gr'])
-			t = float(request.form['k'])
+			t = 300
 			bmhz = float(request.form['bmhz'])
-			noise = float(request.form['noise'])
+			noise = 0
 			ambiente = request.form['nameAmbiente']
 
 			constb = 1.3806503e-23
@@ -329,9 +329,9 @@ def oti():
 			f = float(request.form['fq2'])
 			gt = float(request.form['gt2'])
 			gr = float(request.form['gr2'])
-			t = float(request.form['k2'])
+			t = 300
 			bmhz = float(request.form['bmhz2'])
-			noise = float(request.form['noise2'])
+			noise = 0
 			ambiente = request.form['nameAmbiente2']
 			if ambiente[0] == '-':
 				file = request.files['myfileIN2']
@@ -1254,9 +1254,9 @@ def coberturaUnity():
 	f = float(request.form['fq'])
 	gt = float(request.form['gt'])
 	gr = float(request.form['gr'])
-	t = float(request.form['k'])
+	t = 300
 	bmhz = float(request.form['bmhz'])
-	noise = float(request.form['noise'])
+	noise = 0
 	n = float(request.form['n'])
 	paredess = request.form['paredes']
 	
