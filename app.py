@@ -84,37 +84,37 @@ def indoor():
 			dy = np.linspace(0, yt, ny)
 			px = len(dx)
 			py = len(dy)
-		
+	
+			if ambiente[0] == '-':
+				file = request.files['myfileIN']
+				filename = secure_filename(file.filename) 
+				file.save(os.path.join(filename))
+				valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
+				n = calculan(valores, distancia, Lf)
+			elif ambiente[0] == 'C':
+				n = 1.8
+			elif ambiente[0:11] == 'Ambientes G':
+				n = 2
+			elif ambiente[0:11] == 'Ambientes M':
+				n = 3
+			elif ambiente[0:11] == 'Ambientes D':
+				n = 4
+			
+			modelo = request.form['nameModels']
+			
+			if modelo[0] == 'M':
+				file1 = request.files['paredes']
+				filename1 = secure_filename(file1.filename) 
+				file1.save(os.path.join(filename1))
+				modelh, modelv, ph, pv = lerTexto(filename1)
+			if modelo[0] == 'F':
+				file = request.files['myfileIN']
+				filename = secure_filename(file.filename) 
+				file.save(os.path.join(filename))
+				valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
+
 		except:
 			return render_template('indexError.html')
-	
-		if ambiente[0] == '-':
-			file = request.files['myfileIN']
-			filename = secure_filename(file.filename) 
-			file.save(os.path.join(filename))
-			valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
-			n = calculan(valores, distancia, Lf)
-		elif ambiente[0] == 'C':
-			n = 1.8
-		elif ambiente[0:11] == 'Ambientes G':
-			n = 2
-		elif ambiente[0:11] == 'Ambientes M':
-			n = 3
-		elif ambiente[0:11] == 'Ambientes D':
-			n = 4
-			
-		modelo = request.form['nameModels']
-			
-		if modelo[0] == 'M':
-			file1 = request.files['paredes']
-			filename1 = secure_filename(file1.filename) 
-			file1.save(os.path.join(filename1))
-			modelh, modelv, ph, pv = lerTexto(filename1)
-		if modelo[0] == 'F':
-			file = request.files['myfileIN']
-			filename = secure_filename(file.filename) 
-			file.save(os.path.join(filename))
-			valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
 
 		if modelo[0] == 'M':
 			ext = 'mk'
@@ -1386,4 +1386,4 @@ def closein(Lf, n, distancia):
 def calculadistancia(l1, l2, a1, a2):
     return haversine([float(l1), float(l2)], [a1, a2]) # km *1000 eh metro
 
-#if __name__ == '__main__': app.run(debug=True)
+# if __name__ == '__main__': app.run(debug=True)
