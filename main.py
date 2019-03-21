@@ -1207,7 +1207,7 @@ def AG(n_routers, modelo, ny, nx, limiar, nGerações, xt, yt, dx, dy, Lf, n, ph
 
         pop = mutacao(pop, taxaDeMutacao, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, xt, yt, valores, distancia)
 
-        print(f'Geração {i} -- Melhor Indivíduo: {pop[0]} -- non_cob: {pop[0][n_routers * 2]}')
+        #print(f'Geração {i} -- Melhor Indivíduo: {pop[0]} -- non_cob: {pop[0][n_routers * 2]}')
 
         bestIndFit.append(pop[0][n_routers * 2])
         mediumFit.append(np.mean(pop, axis=0)[n_routers * 2])
