@@ -930,8 +930,8 @@ def cobertura(x, y, modelo, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, 
         
         divisor = ((sum(D))**2) - (Num * sum(D**2))
         
-        alfaC = (sum(D) * sum(D * np.mean(B))) - (sum(D**2) * sum(B)) 
-        betaC = (sum(D) * sum(B)) - (Num * sum (D * np.mean(B))) 
+        alfaC = (sum(D) * sum(np.asarray(D) * B)) - (sum(D**2) * sum(B)) 
+        betaC = (sum(D) * sum(B)) - (Num * sum(np.asarray(D) * B)) 
         alfa = alfaC / divisor
         beta = betaC / divisor
     
