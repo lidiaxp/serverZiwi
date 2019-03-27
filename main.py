@@ -1188,7 +1188,7 @@ def mutacao(pop, tx, n_routers, modelo, ny, nx, limiar, dx, dy, Lf, n, ph, pv, m
     pop.sort(key=lambda x: x[n_routers * 2], reverse=False)
     return pop
 
-def AG(n_routers, modelo, ny, nx, limiar, nGerações, xt, yt, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia):
+def AG(n_routers, modelo, ny, nx, limiar, nGeracoes, xt, yt, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia):
     bestIndFit = []
     mediumFit = []
 
@@ -1197,7 +1197,7 @@ def AG(n_routers, modelo, ny, nx, limiar, nGerações, xt, yt, dx, dy, Lf, n, ph
     taxaDeCruzamento = 0.5
     taxaDeMutacao = 0.1
     
-    for i in range(nGerações):
+    for i in range(nGeracoes):
 
         popPais = torneio(pop, taxaDeCruzamento, 3, n_routers)
         
