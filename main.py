@@ -923,7 +923,7 @@ def cobertura(x, y, modelo, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, 
         perda_f.append([])
         
     if modelo == 'fi':
-        B = valores # potencia recebida
+        B = ptdb - valores # perda
         pontos = distancia # distancia
         D = 10 * np.log10(np.asarray(pontos))
         Num = len(D)
