@@ -90,7 +90,7 @@ def indoor():
 				filename = secure_filename(file.filename) 
 				file.save(os.path.join(filename))
 				valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
-				n = calculan(valores, distancia, Lf)
+				n = calculan(valores, distancia)
 			elif ambiente[0] == 'C':
 				n = 1.8
 			elif ambiente[0:11] == 'Ambientes G':
@@ -242,25 +242,25 @@ def comparision():
 	algo = 'comparacao'
 
 	if request.method == 'POST':
-		#try:
-		f = float(request.form['freq1'])
-		do = float(request.form['d01'])
-		ptdb = float(request.form['ptdb1'])
-		gt = float(request.form['gt1'])
-		gr = float(request.form['gr1'])
-		x0 = float(request.form['x01'])
-		y0 = float(request.form['y01'])
-		file = request.files['compararFile']
-		filename = secure_filename(file.filename) 
-		file.save(os.path.join(filename))
+		try:
+			f = float(request.form['freq1'])
+			do = float(request.form['d01'])
+			ptdb = float(request.form['ptdb1'])
+			gt = float(request.form['gt1'])
+			gr = float(request.form['gr1'])
+			x0 = float(request.form['x01'])
+			y0 = float(request.form['y01'])
+			file = request.files['compararFile']
+			filename = secure_filename(file.filename) 
+			file.save(os.path.join(filename))
 
-		Lf = 32.45 + 20 * np.log10(do/1000) + 20 * np.log10(f)
-		valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0, y0)
-		pathN, n, Ln5, Ln4, Ln3, Ln2, Ln1, Lnn, dns = calculanComGrafico(valores, distancia, Lf, do)
-		pathComparar, itu, ci, mk, o, fi, a, b = comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr)
-		info = str(round(n, 2)) + " " + str(round(rmse(o, itu), 4)) + " " + str(round(rmse(o, ci), 4)) + " " +  str(round(rmse(o, mk), 4)) + " " +  str(round(rmse(o, fi), 4)) + " " + str(round(a, 2)) + " " + str(round(b, 2))
-		#except:
-		#	return render_template('indexError.html')
+			Lf = 32.45 + 20 * np.log10(do/1000) + 20 * np.log10(f)
+			valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0, y0)
+			pathN, n, Ln5, Ln4, Ln3, Ln2, Ln1, Lnn, dns = calculanComGrafico(valores, distancia, Lf, do)
+			pathComparar, itu, ci, mk, o, fi, a, b = comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr)
+			info = str(round(n, 2)) + " " + str(round(rmse(o, itu), 4)) + " " + str(round(rmse(o, ci), 4)) + " " +  str(round(rmse(o, mk), 4)) + " " +  str(round(rmse(o, fi), 4)) + " " + str(round(a, 2)) + " " + str(round(b, 2))
+		except:
+			return render_template('indexError.html')
 	
 	return render_template('fifth.html', algo=algo, itu=itu, medido=o, ci=ci, fi=fi, mk=mk, infoCom=info, dist1=distancia, n1=n, Ln5=Ln5, Ln4=Ln4, Ln3=Ln3, Ln2=Ln2, Ln1=Ln1, Lnn=Lnn, dns=dns)
 
@@ -305,57 +305,57 @@ def oti():
 		name = str(now.year) + str(now.month) + str(now.day) + str(now.hour) + str(now.minute) + str(now.second)
 		nomeAG = name
 
-		try:
-			tomada = request.form['optradio']
-			if tomada[0] == 'c':
-				txx = np.asarray(request.form['txx'].split(",")).astype(np.float)
-				tyy = np.asarray(request.form['tyy'].split(",")).astype(np.float)
-				na = int(request.form['na2'])
-				semTomada = ""
-				interacoes = 0
-				limiar = 0
-			else:
-				interacoes = int(request.form['intAG'])
-				limiar = float(request.form['limAG'])
-				semTomada = True
+		#try:
+		tomada = request.form['optradio']
+		if tomada[0] == 'c':
+			txx = np.asarray(request.form['txx'].split(",")).astype(np.float)
+			tyy = np.asarray(request.form['tyy'].split(",")).astype(np.float)
+			na = int(request.form['na2'])
+			semTomada = ""
+			interacoes = 0
+			limiar = 0
+		else:
+			interacoes = int(request.form['intAG'])
+			limiar = float(request.form['limAG'])
+			semTomada = True
 
-			xt = float(request.form['xt2'])
+		xt = float(request.form['xt2'])
 
-			yt = float(request.form['yt2'])
-			x0 = np.asarray(request.form['x02'].split(",")).astype(np.float)
-			y0 = np.asarray(request.form['y02'].split(",")).astype(np.float)
-			ptdo = float(request.form['ptd02'])
-			do = float(request.form['d02'])
-			ptdb = float(request.form['ptdb2'])
-			f = float(request.form['fq2'])
-			gt = float(request.form['gt2'])
-			gr = float(request.form['gr2'])
-			t = 300
-			bmhz = float(request.form['bmhz2'])
-			noise = 0
-			ambiente = request.form['nameAmbiente2']
-			if ambiente[0] == '-':
-				file = request.files['myfileIN2']
-				filename = secure_filename(file.filename) 
-				file.save(os.path.join(filename))
-				valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
-				n = calculan(valores, distancia, Lf)
-			elif ambiente[0] == 'C':
-				n = 1.8
-			elif ambiente[0:11] == 'Ambientes G':
-				n = 2
-			elif ambiente[0:11] == 'Ambientes M':
-				n = 3
-			elif ambiente[0:11] == 'Ambientes D':
-				n = 4
-			modelo = request.form['nameModels2']
-			if modelo[0] == 'M':
-				file1 = request.files['paredes2']
-				filename1 = secure_filename(file1.filename) 
-				file1.save(os.path.join(filename1))
-				modelh, modelv, ph, pv = lerTexto(filename1)
-		except:
-			return render_template('indexError.html')
+		yt = float(request.form['yt2'])
+		x0 = np.asarray(request.form['x02'].split(",")).astype(np.float)
+		y0 = np.asarray(request.form['y02'].split(",")).astype(np.float)
+		ptdo = float(request.form['ptd02'])
+		do = float(request.form['d02'])
+		ptdb = float(request.form['ptdb2'])
+		f = float(request.form['fq2'])
+		gt = float(request.form['gt2'])
+		gr = float(request.form['gr2'])
+		t = 300
+		bmhz = float(request.form['bmhz2'])
+		noise = 0
+		ambiente = request.form['nameAmbiente2']
+		if ambiente[0] == '-':
+			file = request.files['myfileIN2']
+			filename = secure_filename(file.filename) 
+			file.save(os.path.join(filename))
+			valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
+			n = calculan(valores, distancia)
+		elif ambiente[0] == 'C':
+			n = 1.8
+		elif ambiente[0:11] == 'Ambientes G':
+			n = 2
+		elif ambiente[0:11] == 'Ambientes M':
+			n = 3
+		elif ambiente[0:11] == 'Ambientes D':
+			n = 4
+		modelo = request.form['nameModels2']
+		if modelo[0] == 'M':
+			file1 = request.files['paredes2']
+			filename1 = secure_filename(file1.filename) 
+			file1.save(os.path.join(filename1))
+			modelh, modelv, ph, pv = lerTexto(filename1)
+		#except:
+		#	return render_template('indexError.html')
 
 		constb = 1.3806503e-23
 		nx = 80
@@ -608,7 +608,7 @@ def hello2():
 			valores, campoeletrico, distancia = lerArquivo(filename, lat, longg)
 			do = min(distancia) * 1000
 			Lf = 32.45 + 20 * np.log10(do) + 20 * np.log10(f)
-			n = calculan(valores, np.asarray(distancia)/1000, Lf)
+			n = nparaoutdoor(np.asarray(valores), np.asarray(distancia), ptdb)
 		except:
 			return render_template('indexError.html')		
 
@@ -636,6 +636,15 @@ def hello2():
 		info = str(round(n, 2)) + " " + str(round(rmse(perda, suiData), 4)) + " " + str(round(rmse(perda, eccData), 4)) + " " +  str(round(rmse(perda, costData), 4)) + " " + str(round(rmse(perda, ciData), 4)) + " " + str(round(rmse(perda, fiData), 4)) + " " + str(round(alfa, 2)) + " " + str(round(beta, 2))
 
 	return render_template('fourth.html', dist=d, val=perda, ecc=eccData, cost=costData, sui=suiData, ci=ciData, fi=fiData, info=info)
+
+def nparaoutdoor(valores, distancia, ptdb):
+	D = 10 * np.log10(distancia * 1000)
+	A = ptdb - np.asarray(valores)
+	n = sum(D*A)/sum(D*D)
+
+	print(n)
+	return n
+	
 
 @app.route("/down", methods=['GET', 'POST'])
 def download():
@@ -859,13 +868,22 @@ def lerArquivoIndoor(arquivo, l1, l2):
     
     return valores, campoeletrico, distancia
 
-def calculan(valores, distancia, Lf):
+def rp(lista):
+    l = []
+    for i in lista:
+        if i not in l:
+            l.append(i)
+    l.sort()
+    return l
+
+def calculan(valores, distancia):
     n = Symbol('n')
     valor = []
     fim = []
     derivada = []
     
     for i in range(len(distancia)):
+        #print(min(distancia))
         valor.append(valores[np.argmin(distancia)] - 10 * n * np.log10(distancia[i]/min(distancia)))
         if valor[-1] != 0:
             fim.append((-1*(valor[i] - valores[i]))**2)
@@ -878,7 +896,7 @@ def calculan(valores, distancia, Lf):
         soma += i
         
     n = solve(soma)[0]
-    #print(soma)
+    print(soma)
 
     return n
 
@@ -942,7 +960,7 @@ def cobertura(x, y, modelo, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, 
         perda_f.append([])
         
     if modelo == 'fi':
-        B = ptdb - valores # perda
+        B = valores # pr
         pontos = distancia # distancia
         D = 10 * np.log10(np.asarray(pontos))
         Num = len(D)
