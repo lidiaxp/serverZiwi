@@ -7,7 +7,7 @@
           <i class="fas fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive" style="text-align: center;">
-        	<ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav ml-auto">
             <li class="nav-item mx-0 mx-lg-1">
               <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#modelos">     </a>
             </li></ul>
@@ -57,20 +57,20 @@
           <br><br>
           <form action="outdoor" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-            	<div class="row">
-          			<div class="col-lg-6">
-          				<label for="freq">Frequência (MHz)</label>
-              			<input step="any" type="number" id="freq" name="freq" class="form-control" placeholder="Insira a frequência em MHz" value="1800">
-          			</div>
-          		<div class="col-lg-6">
-          			<label>Ambiente</label>
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="freq">Frequência (MHz)</label>
+                    <input step="any" type="number" id="freq" name="freq" class="form-control" placeholder="Insira a frequência em MHz" value="1800">
+                </div>
+              <div class="col-lg-6">
+                <label>Ambiente</label>
                     <select class="form-control" id="nameAmbiente6" name="nameAmbiente6">
                       <option>Cidade Grande</option>
                       <option>Cidade Média</option>
                       <option>Cidade Pequena</option>
                     </select>
-          		</div>
-          	</div>
+              </div>
+            </div>
               
             </div>
             <div class="form-group">
@@ -93,10 +93,10 @@
               <label>Potência Transmitida (dBm)</label>
               <input step="any" type="number" name="ptdb" class="form-control" placeholder="Insira a potência transmitida em dBm">
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
               <label>Distância Mínima (m)</label>
               <input step="any" type="number" name="d0" class="form-control" placeholder="Insira a distância mínima da medição em metros" value="100">
-            </div>
+            </div>-->
             <div class="form-group">
               <label>Ganho da Antena Transmissora (dB)</label>
               <input step="any" type="number" name="gt" class="form-control" placeholder="Insira o ganho da antena transmissora em dB">
@@ -142,7 +142,7 @@ myVar3 = myVar3.substring(1, myVar3.length - 1);
 myVar4 = myVar4.substring(1, myVar4.length - 1);
 myVar5 = myVar5.substring(1, myVar5.length - 1);
 myVar6 = myVar6.substring(1, myVar6.length - 1);
-myVar8 = myVar6.substring(1, myVar8.length - 1);
+myVar8 = myVar8.substring(1, myVar8.length - 1);
 
 d  = [];
 v = [];
@@ -193,11 +193,11 @@ for(var i=0; i < oill.length; i++) {
     fi.push(oill[i]);
 }
 
-document.getElementById("n1").innerText = val[0];
-document.getElementById("n2").innerText = val[0];
-document.getElementById("n3").innerText = val[0];
-document.getElementById("n4").innerText = val[0];
-document.getElementById("n5").innerText = val[0];
+document.getElementById("n1").innerText = "n = " + val[0];
+document.getElementById("n2").innerText = "n = " + val[0];
+document.getElementById("n3").innerText = "n = " + val[0];
+document.getElementById("n4").innerText = "n = " + val[0];
+document.getElementById("n5").innerText = "alfa = " + val[6] + "\nbeta = " + val[7];
 document.getElementById("rmse1").innerText = val[1];
 document.getElementById("rmse2").innerText = val[3];
 document.getElementById("rmse3").innerText = val[2];
