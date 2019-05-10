@@ -16,7 +16,7 @@
             			</div>
             			<div class="form-group">
               				<label>Potência de Transmissão (dBm)</label>
-              				<input step="any" type="number" name="ptdb1" id="ptdb1" class="form-control" placeholder="Insira a potência de transmissão" value="-15">
+              				<input step="any" type="number" name="ptdb1" id="ptdb1" class="form-control" placeholder="Insira a potência de transmissão" value="15">
             			</div>
             			<div class="form-group">
               				<div class="row">
@@ -107,7 +107,7 @@
       </thead>
       <tbody style="background-color: #FFF">
         <tr>
-          <th scope="row">n</th>
+          <th scope="row">Auxiliar</th>
           <td id="n11">0</td>
           <td id="n21">0</td>
           <td id="n31">0</td>
@@ -181,10 +181,10 @@ for(var i=0; i < oill.length; i++) {
     fi.push(oill[i]);
 }
 
-document.getElementById("n11").innerText = val[0];
-document.getElementById("n21").innerText = val[0];
-document.getElementById("n31").innerText = val[0];
-document.getElementById("n41").innerText = val[0];
+document.getElementById("n11").innerText = "n = " + val[0];
+document.getElementById("n21").innerText = "n = " + val[0];
+document.getElementById("n31").innerText = "n = " + val[0];
+document.getElementById("n41").innerText = "alfa = " + val[5] + "\nbeta = " + val[6];
 document.getElementById("rmse11").innerText = val[2];
 document.getElementById("rmse21").innerText = val[3];
 document.getElementById("rmse31").innerText = val[1];
