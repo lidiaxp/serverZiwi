@@ -796,8 +796,6 @@ def comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr):
 	for i in range(len(numeros)):
 		drmse[i] = drmse[i]/numeros[i]
 
-	print(drmse)
-
 	o = ptdb - np.asarray(valores) - gt - gr
 
 	#dis = []
@@ -882,7 +880,7 @@ def calculan(valores, distancia, Lf):
         soma += i
         
     n = solve(soma)[0]
-    print(soma)
+    #print(soma)
 
     return n
 
@@ -1404,7 +1402,7 @@ def combinations(iterable, r):
             yield tuple(pool[i] for i in indices)
 
 def closein(Lf, n, distancia):
-	print(distancia)
+	#print(distancia)
 	return Lf + 10 * n * np.log10(distancia*1000)
 
 def calculadistancia(l1, l2, a1, a2):
