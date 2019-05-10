@@ -90,7 +90,6 @@ def indoor():
 				filename = secure_filename(file.filename) 
 				file.save(os.path.join(filename))
 				valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
-				valores = np.asarray(valores) + gt + gr
 				n = calculan(valores, distancia, Lf)
 			elif ambiente[0] == 'C':
 				n = 1.8
@@ -144,6 +143,7 @@ def indoor():
 			perda_f, non_cob = cobertura(x0, y0, ext, ny, nx, nap, 0, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, valores, distancia)
 		else:
 			perda_f, non_cob = cobertura(x0, y0, ext, ny, nx, nap, 0, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, 0, 0)
+		perda_f = np.asarray(perda_f) + gt + gr
 		ax.plot(x0, y0, 'o', color=cor)
 		plt.title("Perda pelo Modelo " + tit)
 		plt.imshow(perda_f,cmap='jet',extent=[0,xt,0,yt],origin='lower')
@@ -256,7 +256,6 @@ def comparision():
 
 		Lf = 32.45 + 20 * np.log10(do/1000) + 20 * np.log10(f)
 		valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0, y0)
-		valores = np.asarray(valores) + gt + gr
 		pathN, n, Ln5, Ln4, Ln3, Ln2, Ln1, Lnn, dns = calculanComGrafico(valores, distancia, Lf, do)
 		pathComparar, itu, ci, mk, o, fi, a, b = comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr)
 		info = str(round(n, 2)) + " " + str(round(rmse(o, itu), 4)) + " " + str(round(rmse(o, ci), 4)) + " " +  str(round(rmse(o, mk), 4)) + " " +  str(round(rmse(o, fi), 4)) + " " + str(round(a, 2)) + " " + str(round(b, 2))
@@ -340,7 +339,6 @@ def oti():
 				filename = secure_filename(file.filename) 
 				file.save(os.path.join(filename))
 				valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0[0], y0[0]) # Lembre de ajeitar isso aqui
-				valores = np.asarray(valores) + gt + gr
 				n = calculan(valores, distancia, Lf)
 			elif ambiente[0] == 'C':
 				n = 1.8
@@ -435,6 +433,7 @@ def oti():
 				perda_f = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, valores, distancia)[0] 
 			else:
 				perda_f = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, 0, 0)[0]  
+			perda_f = np.asarray(perda_f) + gt + gr
 			ax.plot(bestX, bestY, 'o', color=cor)
 			plt.title("Melhor Perda pelo Modelo Motley Keenan\nMelhor X: " + str(bestX) + "\nMelhor Y: " + str(bestY))
 			plt.imshow(perda_f,cmap='jet',extent=[0,xt,0,yt],origin='lower')
@@ -607,9 +606,8 @@ def hello2():
 			file.save(os.path.join(filename))
 
 			valores, campoeletrico, distancia = lerArquivo(filename, lat, longg)
-			valores = np.asarray(valores) + gt + gr
 			do = min(distancia) * 1000
-			Lf = 32.45 + 20 * np.log10(do/1000) + 20 * np.log10(f)
+			Lf = 32.45 + 20 * np.log10(do) + 20 * np.log10(f)
 			n = calculan(valores, np.asarray(distancia)/1000, Lf)
 		except:
 			return render_template('indexError.html')		
@@ -628,7 +626,7 @@ def hello2():
 
 		for i in range(len(distancia)):
 			d.append(distancia[i])
-			fiData.append(ptdb - (alfa + 10 * beta * np.log10(distancia[i])))
+			fiData.append(ptdb - (alfa + 10 * beta * np.log10(distancia[i])) - gt - gr)
 			eccData.append(ECC(f, h, 1, distancia[i], mod))
 			costData.append(Cost231(f, h, 1, distancia[i], mod))
 			suiData.append(sui(f, h, 1, distancia[i], mod, distancia))
@@ -1402,8 +1400,7 @@ def combinations(iterable, r):
             yield tuple(pool[i] for i in indices)
 
 def closein(Lf, n, distancia):
-	#print(distancia)
-	return Lf + 10 * n * np.log10(distancia*1000)
+	return Lf + 10 * n * np.log10(distancia)
 
 def calculadistancia(l1, l2, a1, a2):
     return haversine([float(l1), float(l2)], [a1, a2]) # km *1000 eh metro
