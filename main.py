@@ -77,7 +77,7 @@ def indoor():
 			constb = 1.3806503e-23
 			nx = 80
 			ny = 40
-			Lf = 20 * np.log10(4 * np.pi * do /(f * (10**3)/(3*(10**8))))
+			Lf = 32.45 + 20 * np.log10(do/1000) + 20 * np.log10(f)
 			nap = len(x0)
 			cor = 'red'
 			dx = np.linspace(0, xt, nx)
@@ -362,7 +362,7 @@ def oti():
 		constb = 1.3806503e-23
 		nx = 80
 		ny = 40
-		Lf = 20 * np.log10(4 * np.pi * do /(f * (10**3)/(3*(10**8))))
+		Lf = 32.45 + 20 * np.log10(do/1000) + 20 * np.log10(f)
 		nap = len(x0)
 		cor = 'red'
 		dx = np.linspace(0, xt, nx)
@@ -608,7 +608,7 @@ def hello2():
 
 			valores, campoeletrico, distancia = lerArquivo(filename, lat, longg)
 			valores = np.asarray(valores) + gt + gr
-			do = min(distancia)
+			do = min(distancia) * 1000
 			Lf = 32.45 + 20 * np.log10(do/1000) + 20 * np.log10(f)
 			n = calculan(valores, np.asarray(distancia)/1000, Lf)
 		except:
@@ -1404,7 +1404,8 @@ def combinations(iterable, r):
             yield tuple(pool[i] for i in indices)
 
 def closein(Lf, n, distancia):
-	return Lf + 10 * n * np.log10(distancia * 1000)
+	print(distancia)
+	return Lf + 10 * n * np.log10(distancia*1000)
 
 def calculadistancia(l1, l2, a1, a2):
     return haversine([float(l1), float(l2)], [a1, a2]) # km *1000 eh metro
