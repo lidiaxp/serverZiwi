@@ -77,7 +77,7 @@ def indoor():
 			constb = 1.3806503e-23
 			nx = 80
 			ny = 40
-			Lf = 32.45 + 20 * np.log10(do/1000) + 20 * np.log10(f)
+			Lf = 32.45 + 20 * np.log10(f/1000) + 20 * np.log10(do)
 			nap = len(x0)
 			cor = 'red'
 			dx = np.linspace(0, xt, nx)
@@ -254,7 +254,7 @@ def comparision():
 			filename = secure_filename(file.filename) 
 			file.save(os.path.join(filename))
 
-			Lf = 32.45 + 20 * np.log10(do/1000) + 20 * np.log10(f)
+			Lf = 32.45 + 20 * np.log10(do) + 20 * np.log10(f/1000)
 			valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0, y0)
 			pathN, n, Ln5, Ln4, Ln3, Ln2, Ln1, Lnn, dns = calculanComGrafico(valores, distancia, Lf, do)
 			pathComparar, itu, ci, mk, o, fi, a, b = comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr)
@@ -360,7 +360,7 @@ def oti():
 		constb = 1.3806503e-23
 		nx = 80
 		ny = 40
-		Lf = 32.45 + 20 * np.log10(do/1000) + 20 * np.log10(f)
+		Lf = 32.45 + 20 * np.log10(f/1000) + 20 * np.log10(do)
 		nap = len(x0)
 		cor = 'red'
 		dx = np.linspace(0, xt, nx)
@@ -607,7 +607,7 @@ def hello2():
 
 			valores, campoeletrico, distancia = lerArquivo(filename, lat, longg)
 			do = min(distancia) * 1000
-			Lf = 32.45 + 20 * np.log10(do) + 20 * np.log10(f)
+			Lf = 92.45 + 20 * np.log10(do) + 20 * np.log10(f/1000)
 			n = nparaoutdoor(np.asarray(valores), np.asarray(distancia), ptdb)
 		except:
 			return render_template('indexError.html')		
@@ -1300,7 +1300,7 @@ def coberturaUnity():
 	constb = 1.3806503e-23
 	nx = 80
 	ny = 40
-	Lf = 32.45 + 20 * np.log10(do/1000) + 20 * np.log10(f) + gt + gr
+	Lf = 32.45 + 20 * np.log10(do) + 20 * np.log10(f/1000) + gt + gr
 	nap = len(x0)
 	dx = np.linspace(0, xt, nx)
 	dy = np.linspace(0, yt, ny)
