@@ -435,7 +435,7 @@ def oti():
 				perda_f = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, 0, 0)[0]  
 			perda_f = np.asarray(perda_f) + gt + gr
 			ax.plot(bestX, bestY, 'o', color=cor)
-			plt.title("Melhor Perda pelo Modelo Motley Keenan\nMelhor X: " + str(bestX) + "\nMelhor Y: " + str(bestY))
+			plt.title("Melhor Perda pelo Modelo" + tit + "\nMelhor X: " + str(bestX) + "\nMelhor Y: " + str(bestY))
 			plt.imshow(perda_f,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 			plt.colorbar(label="dB")
 
