@@ -607,7 +607,7 @@ def hello2():
 
 			valores, campoeletrico, distancia = lerArquivo(filename, lat, longg)
 			do = min(distancia) * 1000
-			Lf = 92.45 + 20 * np.log10(do) + 20 * np.log10(f/1000)
+			Lf = 92.45 + 20 * np.log10(do) + 20 * np.log10(f/1000) + (gt + gr)
 			n = nparaoutdoor(np.asarray(valores), np.asarray(distancia), ptdb)
 		except:
 			return render_template('indexError.html')		
@@ -626,7 +626,7 @@ def hello2():
 
 		for i in range(len(distancia)):
 			d.append(distancia[i])
-			fiData.append(ptdb - (alfa + 10 * beta * np.log10(distancia[i])) - gt - gr)
+			fiData.append(ptdb - (alfa + 10 * beta * np.log10(distancia[i])) )
 			eccData.append(ECC(f, h, 1, distancia[i], mod))
 			costData.append(Cost231(f, h, 1, distancia[i], mod))
 			suiData.append(sui(f, h, 1, distancia[i], mod, distancia))
@@ -803,7 +803,7 @@ def comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr):
 	for i in range(len(numeros)):
 		drmse[i] = drmse[i]/numeros[i]
 
-	o = ptdb - np.asarray(valores) - gt - gr
+	o = ptdb - np.asarray(valores) - (gt + gr)
 
 	#dis = []
 	#for d in distancia:
