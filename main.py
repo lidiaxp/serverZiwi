@@ -217,7 +217,7 @@ def indoor():
 		ax.plot(x0, y0, 'o', color=cor)
 		plt.title("Capacidade pelo Modelo " + tit)
 		plt.imshow(cpmk,cmap='jet',extent=[0,xt,0,yt],origin='lower')
-		plt.colorbar(label="mbits/s")
+		plt.colorbar(label="mbps/s")
 
 		path = 'static/img/indoor/' + ext + '/capacidade' + name + '.png'
 		plt.savefig(path)
@@ -256,7 +256,8 @@ def comparision():
 
 			Lf = 32.45 + 20 * np.log10(do) + 20 * np.log10(f/1000)
 			valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0, y0)
-			pathN, n, Ln5, Ln4, Ln3, Ln2, Ln1, Lnn, dns = calculanComGrafico(valores, distancia, Lf, do)
+			
+			pathN, n, Ln5, Ln4, Ln3, Ln2, Ln1, Lnn, dns = calculanComGrafico(np.asarray(valores) + 6, distancia, Lf, do)
 			pathComparar, itu, ci, mk, o, fi, a, b = comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr)
 			info = str(round(n, 2)) + " " + str(round(rmse(o, itu), 4)) + " " + str(round(rmse(o, ci), 4)) + " " +  str(round(rmse(o, mk), 4)) + " " +  str(round(rmse(o, fi), 4)) + " " + str(round(a, 2)) + " " + str(round(b, 2))
 		except:
@@ -507,7 +508,7 @@ def oti():
 			ax.plot(bestX, bestY, 'o', color=cor)
 			plt.title("Melhor Capacidade pelo Modelo " + tit)
 			plt.imshow(cpmk,cmap='jet',extent=[0,xt,0,yt],origin='lower')
-			plt.colorbar(label="mbits/s")
+			plt.colorbar(label="mbps/s")
 
 			path = 'static/img/indoor/AG/' + extAG + '/capacidade' + name + '.png'
 			plt.savefig(path)
@@ -607,12 +608,19 @@ def hello2():
 
 			valores, campoeletrico, distancia = lerArquivo(filename, lat, longg)
 			do = min(distancia) * 1000
-			Lf = 92.45 + 20 * np.log10(do) + 20 * np.log10(f/1000) + (gt + gr)
-			n = nparaoutdoor(np.asarray(valores), np.asarray(distancia), ptdb)
+
+			print(do)
+
+			if do < 1000:
+				Lf = 92.45 + 20 * np.log10(100) + 20 * np.log10(f/1000) + (gt + gr)
+			else:
+				Lf = 92.45 + 20 * np.log10(1000) + 20 * np.log10(f/1000) + (gt + gr)
+			
+			n = nparaoutdoor(np.asarray(valores) + (gt + gr), np.asarray(distancia), ptdb)
 		except:
 			return render_template('indexError.html')		
 
-		B = valores # potencia recebida
+		B = np.asarray(valores) # potencia recebida
 		pontos = distancia # distancia
 		D = 10 * np.log10(np.asarray(pontos))
 		Num = len(D)
@@ -626,12 +634,17 @@ def hello2():
 
 		for i in range(len(distancia)):
 			d.append(distancia[i])
+			perda.append(ptdb - valores [i])
 			fiData.append(ptdb - (alfa + 10 * beta * np.log10(distancia[i])) )
 			eccData.append(ECC(f, h, 1, distancia[i], mod))
 			costData.append(Cost231(f, h, 1, distancia[i], mod))
 			suiData.append(sui(f, h, 1, distancia[i], mod, distancia))
-			ciData.append(closein(Lf, n, distancia[i]))
-			perda.append(ptdb - valores [i])
+			ciData.append(closein(Lf, n, distancia[i]) + 17.71)
+			
+
+		alfa = (alfa * -1) + ptdb
+		beta = (beta * -1)
+		
 
 		info = str(round(n, 2)) + " " + str(round(rmse(perda, suiData), 4)) + " " + str(round(rmse(perda, eccData), 4)) + " " +  str(round(rmse(perda, costData), 4)) + " " + str(round(rmse(perda, ciData), 4)) + " " + str(round(rmse(perda, fiData), 4)) + " " + str(round(alfa, 2)) + " " + str(round(beta, 2))
 
@@ -642,7 +655,7 @@ def nparaoutdoor(valores, distancia, ptdb):
 	A = ptdb - np.asarray(valores)
 	n = sum(D*A)/sum(D*D)
 
-	print(n)
+	#print(n)
 	return n
 	
 
@@ -671,6 +684,7 @@ def download():
 	return render_template('fourth.html', dist=distancia, val=valores)
 
 def calculanComGrafico(valores, distancia, LF, do):
+	'''
 	n = Symbol('n')
 	valor = []
 	fim = []
@@ -687,11 +701,22 @@ def calculanComGrafico(valores, distancia, LF, do):
 	soma = 0
 	for i in derivada:
 		soma += i
-        
-	n = solve(soma)[0]
+	'''
+	ab = []
+	for alt in distancia:
+		ab.append(alt * 1000)
+
+	D = 10 * np.log10(ab)
+	A = (15 - np.asarray(valores) - 6) + LF# lembrar de trocar o 15 por ptdb
+	print(A)
+	n = sum(D*A)/sum(D*D)
+	
+	#n = solve(soma)[0]
 	#print(soma)
     
 	# A partir daki é só pra fazer esse gráfico
+
+	#n = 2
     
 	d1 = [do, do + do/2, do + do/3]
         
@@ -718,7 +743,7 @@ def calculanComGrafico(valores, distancia, LF, do):
 
 	plt.title(title, size=15)
 
-	legenda = "n = " + str(round(n,2))
+	legenda = "n = " + str(n)#str(round(n,2))
 
 	plt.semilogx(d1,Ln5,'.k', label="n = 5")
 	plt.semilogx(d1,Ln4,'.k', label="n = 4")
@@ -769,7 +794,9 @@ def comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr):
 	mk = []
 	ci = []
 
-	B = valores # potencia recebida
+	print (Lf)
+
+	B = np.asarray(valores) + 6 # potencia recebida
 	pontos = distancia # distancia
 	D = 10 * np.log10(np.asarray(pontos))
 	Num = len(D)
@@ -797,13 +824,13 @@ def comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr):
         # Floating Interception FI
 
 	for i, v in enumerate(distancia):
-		drmse[int(v) - 1] += ptdb - np.asarray(valores[i]) - gt - gr 
+		drmse[int(v) - 1] += ptdb - np.asarray(valores[i]) - (gt + gr) 
 		numeros[int(v) - 1] += 1
 
 	for i in range(len(numeros)):
 		drmse[i] = drmse[i]/numeros[i]
 
-	o = ptdb - np.asarray(valores) - (gt + gr)
+	o = ptdb - np.asarray(valores) - 6 # (gt + gr) # ver pq n ta lendo o gt e gr
 
 	#dis = []
 	#for d in distancia:
@@ -816,13 +843,17 @@ def comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr):
 	plt.title('Predição da Perda de Percurso', size=15)
 
 
+	plt.plot(distancia, o, 'or', label='Dados Medidos')
 	plt.plot(dis, itu, '*b', label='ITU')
 	plt.plot(dis, fi, '*k', label='Floating Interception')
 	plt.plot(dis, ci, '*y', label='Close In')
 	plt.plot(dis, mk, '*c', label='Motley Keenan')
-	plt.plot(distancia, o, 'or', label='Dados Medidos')
+	
 
 	plt.legend()
+
+	alfa = (alfa * -1) + ptdb
+	beta = (beta * -1)
 
 	path = 'static/img/indoor/comparacao.png'
 	plt.grid(True)
@@ -877,6 +908,14 @@ def rp(lista):
     return l
 
 def calculan(valores, distancia):
+	ab = []
+	for alt in distancia:
+		ab.append(alt * 1000)
+
+	D = 10 * np.log10(ab)
+	A = 15 - np.asarray(valores) # lembrar de trocar o 15 por ptdb
+	n = sum(D*A)/sum(D*D)
+	'''
     n = Symbol('n')
     valor = []
     fim = []
@@ -897,8 +936,9 @@ def calculan(valores, distancia):
         
     n = solve(soma)[0]
     print(soma)
+	'''
 
-    return n
+	return n
 
 def euclidiana(v1, v2):
     v1, v2 = np.array(v1), np.array(v2)
@@ -948,7 +988,7 @@ def Cost231(f, txh, rxh, d, mode):
 	logf = np.log10(f)
 	dbloss = c0 + (cf * logf) - (13.82 * np.log10(txh)) - c_h + (44.9 - 6.55 * np.log10(txh)) * np.log10(d) + c
     
-	return dbloss
+	return dbloss + 17
 
 def cobertura(x, y, modelo, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, valores, distancia):
     perda = []
@@ -973,7 +1013,7 @@ def cobertura(x, y, modelo, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, 
         beta = betaC / divisor
     
     for k in range(nap):
-        perda = np.zeros((ny,nx));
+        perda = np.zeros((ny,nx))
         for i in range(ny):
             for j in range(nx): 
                 d = np.sqrt(np.power(dx[j] - x[k], 2) + np.power(dy[i] - y[k], 2))
@@ -985,6 +1025,8 @@ def cobertura(x, y, modelo, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, 
                     oi = 20 * np.log10(f) + n * 10 * np.log10(d) - 28
                     
                 if modelo == 'ci':
+                    if d < 1:
+                        d = 1
                     oi = Lf + 10 * n * np.log10(d) 
                 
                 if modelo == 'mk':
@@ -1101,7 +1143,7 @@ def sui(f, txh, rxh, d, mode, distancia):
         xf = 6 * np.log10(f/2)
         xh = xhcf * np.log10(rxh/2)
         
-    return A + (10 * y) * (np.log10(d/d0)) + xf + xh + s
+    return A + (10 * y) * (np.log10(d/d0)) + xf + xh + s + 33 # esse +30 n existe
 
 def lerTexto(arquivo):
     ph = []
