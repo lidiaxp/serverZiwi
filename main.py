@@ -639,7 +639,7 @@ def hello2():
 			eccData.append(ECC(f, h, 1, distancia[i], mod))
 			costData.append(Cost231(f, h, 1, distancia[i], mod))
 			suiData.append(sui(f, h, 1, distancia[i], mod, distancia))
-			ciData.append(closein(Lf, n, distancia[i]) + 17.71)
+			ciData.append(closein(Lf, n, distancia[i]) + gt + gr)
 			
 
 		alfa = (alfa * -1) + ptdb
