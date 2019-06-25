@@ -612,11 +612,11 @@ def hello2():
 			print(do)
 
 			if do < 1000:
-				Lf = 92.45 + 20 * np.log10(100) + 20 * np.log10(f/1000) + (gt + gr)
+				Lf = 92.45 + 20 * np.log10(100) + 20 * np.log10(f/1000)
 			else:
-				Lf = 92.45 + 20 * np.log10(1000) + 20 * np.log10(f/1000) + (gt + gr)
+				Lf = 92.45 + 20 * np.log10(1000) + 20 * np.log10(f/1000)
 			
-			n = nparaoutdoor(np.asarray(valores) + (gt + gr), np.asarray(distancia), ptdb)
+			n = nparaoutdoor(np.asarray(valores), np.asarray(distancia), ptdb, Lf)
 		except:
 			return render_template('indexError.html')		
 
@@ -626,6 +626,8 @@ def hello2():
 		Num = len(D)
         
 		divisor = ((sum(D))**2) - (Num * sum(D**2))
+
+		print("Lf: " + str(Lf))
         
 		alfaC = (sum(D) * sum(np.asarray(D) * B)) - (sum(D**2) * sum(B)) 
 		betaC = (sum(D) * sum(B)) - (Num * sum(np.asarray(D) * B)) 
@@ -639,23 +641,21 @@ def hello2():
 			eccData.append(ECC(f, h, 1, distancia[i], mod))
 			costData.append(Cost231(f, h, 1, distancia[i], mod))
 			suiData.append(sui(f, h, 1, distancia[i], mod, distancia))
-			ciData.append(closein(Lf, n, distancia[i]) + gt + gr)
+			ciData.append(closein(Lf, n, distancia[i]))
 			
 
 		alfa = (alfa * -1) + ptdb
 		beta = (beta * -1)
-		
 
 		info = str(round(n, 2)) + " " + str(round(rmse(perda, suiData), 4)) + " " + str(round(rmse(perda, eccData), 4)) + " " +  str(round(rmse(perda, costData), 4)) + " " + str(round(rmse(perda, ciData), 4)) + " " + str(round(rmse(perda, fiData), 4)) + " " + str(round(alfa, 2)) + " " + str(round(beta, 2))
 
 	return render_template('fourth.html', dist=d, val=perda, ecc=eccData, cost=costData, sui=suiData, ci=ciData, fi=fiData, info=info)
 
-def nparaoutdoor(valores, distancia, ptdb):
-	D = 10 * np.log10(distancia * 1000)
-	A = ptdb - np.asarray(valores)
+def nparaoutdoor(valores, distancia, ptdb, Lf):
+	D = 10 * np.log10(np.asarray(distancia) * 10)
+	A = (ptdb - np.asarray(valores)) - Lf
 	n = sum(D*A)/sum(D*D)
-
-	#print(n)
+	
 	return n
 	
 
@@ -1460,7 +1460,7 @@ def combinations(iterable, r):
             yield tuple(pool[i] for i in indices)
 
 def closein(Lf, n, distancia):
-	return Lf + 10 * n * np.log10(distancia)
+	return Lf + 10 * n * np.log10(distancia * 10)
 
 def calculadistancia(l1, l2, a1, a2):
     return haversine([float(l1), float(l2)], [a1, a2]) # km *1000 eh metro
