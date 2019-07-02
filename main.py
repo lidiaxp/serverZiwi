@@ -217,7 +217,7 @@ def indoor():
 		ax.plot(x0, y0, 'o', color=cor)
 		plt.title("Capacidade pelo Modelo " + tit)
 		plt.imshow(cpmk,cmap='jet',extent=[0,xt,0,yt],origin='lower')
-		plt.colorbar(label="mbps/s")
+		plt.colorbar(label="mbps")
 
 		path = 'static/img/indoor/' + ext + '/capacidade' + name + '.png'
 		plt.savefig(path)
@@ -250,6 +250,7 @@ def comparision():
 			gr = float(request.form['gr1'])
 			x0 = float(request.form['x01'])
 			y0 = float(request.form['y01'])
+			ambiente = request.form['nameAmbiente']
 			file = request.files['compararFile']
 			filename = secure_filename(file.filename) 
 			file.save(os.path.join(filename))
@@ -258,7 +259,24 @@ def comparision():
 			valores, campoeletrico, distancia = lerArquivoIndoor(filename, x0, y0)
 			
 			pathN, n, Ln5, Ln4, Ln3, Ln2, Ln1, Lnn, dns = calculanComGrafico(np.asarray(valores) + 6, distancia, Lf, do)
-			pathComparar, itu, ci, mk, o, fi, a, b = comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr)
+			
+			if ambiente[0] == '-':
+				nITU = n
+				nMK = n	
+			elif ambiente[0] == 'C':
+				nITU = 2
+				nMK = 1.8
+			elif ambiente[0:11] == 'Ambientes G':
+				nITU = 2.2
+				nMK = 2
+			elif ambiente[0:11] == 'Ambientes M':
+				nITU = 2.8
+				nMK = 3
+			elif ambiente[0:11] == 'Ambientes D':
+				nITU = 3
+				nMK = 4
+
+			pathComparar, itu, ci, mk, o, fi, a, b = comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr, nITU, nMK)
 			info = str(round(n, 2)) + " " + str(round(rmse(o, itu), 4)) + " " + str(round(rmse(o, ci), 4)) + " " +  str(round(rmse(o, mk), 4)) + " " +  str(round(rmse(o, fi), 4)) + " " + str(round(a, 2)) + " " + str(round(b, 2))
 		except:
 			return render_template('indexError.html')
@@ -429,14 +447,16 @@ def oti():
 
 			if modelo[0] == 'M':
 				ax = plotarParedes(ax, ph, pv, modelh, modelv) 
-				perda_f = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, 0, 0)[0]
+				perda_f, non_cob = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, modelv, f, ptdb, gt, gr, py, px, 0, 0)
 			elif modelo[0] == 'F':
-				perda_f = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, valores, distancia)[0] 
+				perda_f, non_cob = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, valores, distancia)
 			else:
-				perda_f = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, 0, 0)[0]  
+				perda_f, non_cob = cobertura(bestX, bestY, extAG, ny, nx, nap, limiar, dx, dy, Lf, n, 0, 0, 0, 0, f, ptdb, gt, gr, py, px, 0, 0)
+			
 			perda_f = np.asarray(perda_f) + gt + gr
+			
 			ax.plot(bestX, bestY, 'o', color=cor)
-			plt.title("Melhor Perda pelo Modelo" + tit + "\nMelhor X: " + str(bestX) + "\nMelhor Y: " + str(bestY))
+			plt.title("Melhor Perda pelo Modelo" + tit + "\nMelhor X: " + str(bestX) + "\nMelhor Y: " + str(bestY) + "\nCobertura de: " + str(100 - non_cob) + "%")
 			plt.imshow(perda_f,cmap='jet',extent=[0,xt,0,yt],origin='lower')
 			plt.colorbar(label="dB")
 
@@ -508,7 +528,7 @@ def oti():
 			ax.plot(bestX, bestY, 'o', color=cor)
 			plt.title("Melhor Capacidade pelo Modelo " + tit)
 			plt.imshow(cpmk,cmap='jet',extent=[0,xt,0,yt],origin='lower')
-			plt.colorbar(label="mbps/s")
+			plt.colorbar(label="mbps")
 
 			path = 'static/img/indoor/AG/' + extAG + '/capacidade' + name + '.png'
 			plt.savefig(path)
@@ -788,7 +808,7 @@ def plotarParedes(ax, ph, pv, modelh, modelv):
     
     return ax
 
-def comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr):
+def comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr, nITU, nMK):
 	itu = []
 	fi = []
 	mk = []
@@ -796,7 +816,7 @@ def comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr):
 
 	print (Lf)
 
-	B = np.asarray(valores) + 6 # potencia recebida
+	B = np.asarray(valores) + (gt + gr) # potencia recebida
 	pontos = distancia # distancia
 	D = 10 * np.log10(np.asarray(pontos))
 	Num = len(D)
@@ -817,9 +837,9 @@ def comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr):
 
 	for i in dis:
 		#print(i)
-		itu.append(20 * np.log10(f) + n * 10 * np.log10(i) - 28) #itu
+		itu.append(20 * np.log10(f) + nITU * 10 * np.log10(i) - 28) #itu
 		fi.append(ptdb - (alfa + 10 * beta * np.log10(i))) 
-		mk.append(Lf + 10 * n * np.log10(i/do)) #MK
+		mk.append(Lf + 10 * nMK * np.log10(i/do)) #MK
 		ci.append(Lf + 10 * n * np.log10(i)) #ci
         # Floating Interception FI
 
@@ -830,7 +850,7 @@ def comparar(distancia, do, f, Lf, n, ptdb, valores, gt, gr):
 	for i in range(len(numeros)):
 		drmse[i] = drmse[i]/numeros[i]
 
-	o = ptdb - np.asarray(valores) - 6 # (gt + gr) # ver pq n ta lendo o gt e gr
+	o = ptdb - np.asarray(valores) - (gt + gr) 
 
 	#dis = []
 	#for d in distancia:
