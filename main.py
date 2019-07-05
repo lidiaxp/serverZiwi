@@ -1037,7 +1037,10 @@ def cobertura(x, y, modelo, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, 
         for i in range(ny):
             for j in range(nx): 
                 d = np.sqrt(np.power(dx[j] - x[k], 2) + np.power(dy[i] - y[k], 2))
-                
+
+                if d<1:
+                    d = 1
+
                 if modelo == 'fi':
                     oi = alfa + 10 * beta * np.log10(d)
                     
@@ -1045,8 +1048,6 @@ def cobertura(x, y, modelo, ny, nx, nap, limiar, dx, dy, Lf, n, ph, pv, modelh, 
                     oi = 20 * np.log10(f) + n * 10 * np.log10(d) - 28
                     
                 if modelo == 'ci':
-                    if d < 1:
-                        d = 1
                     oi = Lf + 10 * n * np.log10(d) 
                 
                 if modelo == 'mk':
@@ -1402,6 +1403,9 @@ def coberturaUnity():
 			for j in range(nx): 
 				d = np.sqrt(np.power(dx[j] - x0[k], 2) + np.power(dy[i] - y0[k], 2))
                     
+				if d<1:
+					d = 1
+
 				if modelo == 'itu':
 					oi = 20 * np.log10(f) + n * 10 * np.log10(d) - 28
                     
